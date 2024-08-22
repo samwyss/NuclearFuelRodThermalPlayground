@@ -1,6 +1,8 @@
+from Solver import Solver
+
 def main():
     """main driver function for ThermalPlayground"""
-    pass
+    solver = Solver()
 
 # runs main
 if __name__ == '__main__':
