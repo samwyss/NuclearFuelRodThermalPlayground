@@ -11,6 +11,7 @@ class Model:
     def __init__(self, config: Config):
         """
         Model constructor
+        :param config: model configuration
         """
 
         # construct mesh
@@ -20,4 +21,8 @@ class Model:
         self.__engine: Engine = Engine(config)
 
     def run(self) -> None:
+        """
+        runs model
+        :return: None
+        """
         self.__engine.run(self.__mesh)
