@@ -1,7 +1,10 @@
+from Config import Config
+
+
 class Mesh:
     """represents and provides a high level interface for the simulation mesh"""
 
-    def __init__(self):
+    def __init__(self, config: Config):
         """Mesh constructor"""
         pass
 
