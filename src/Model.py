@@ -1,6 +1,5 @@
 from src.Config import Config
 from src.Engine import Engine
-from src.Mesh import Mesh
 
 
 class Model:
@@ -14,9 +13,6 @@ class Model:
         :param config: model configuration
         """
 
-        # construct mesh
-        self.__mesh: Mesh = Mesh(config)
-
         # construct model
         self.__engine: Engine = Engine(config)
 
@@ -25,4 +21,14 @@ class Model:
         runs model
         :return: None
         """
-        self.__engine.run(self.__mesh)
+
+        # number of time steps to run
+        num_time_steps = 0  # todo calculate me
+
+        # main time loop
+        for t_step in range(num_time_steps):
+            # update temperature
+            self.__engine.update()
+
+            # conditionally log data
+            # todo create sensor observer class
