@@ -2,7 +2,11 @@ from typing import Any
 
 
 class Config:
-    """configuration object"""
+    """
+    configuration object
+
+    used to bootstrap simulation
+    """
 
     def __init__(
         self,
