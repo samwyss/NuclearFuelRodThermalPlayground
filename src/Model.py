@@ -16,6 +16,8 @@ class Model:
         # construct model
         self.__engine: Engine = Engine(config)
 
+        # todo create sensor observer class
+
     def run(self) -> None:
         """
         runs model
@@ -31,4 +33,4 @@ class Model:
             self.__engine.update()
 
             # conditionally log data
-            # todo create sensor observer class
+            # todo conditionally call log on sensor observer class
