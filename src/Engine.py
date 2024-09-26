@@ -1,7 +1,6 @@
 from typing import Any
 
 from Config import Config
-from src.Mesh import Mesh
 
 
 class Engine:
@@ -15,6 +14,6 @@ class Engine:
         """changes how Solver is represented, useful for debugging"""
         return self.__dict__
 
-    def run(self, mesh: Mesh):
-        """runs the model"""
+    def update(self):
+        """updates the model to the next timestep"""
         pass
