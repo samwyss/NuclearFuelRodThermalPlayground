@@ -1,5 +1,7 @@
 from typing import Any
 
+from numpy import full
+
 from Config import Config
 
 
@@ -9,9 +11,15 @@ class Engine:
     def __init__(self, config: Config):
         """Solver constructor"""
 
-        # todo set up material properties
-
         # todo set up mesh stuff
+        num_points = (
+            30  # todo need to determine this, maybe 10 elements for each region?
+        )
+
+        # set up initial temperature
+        self.__temperature = full(num_points, config.get_coolant_temp())
+
+        # todo set up material properties
 
         pass
 
