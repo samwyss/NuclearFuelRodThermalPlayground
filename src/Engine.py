@@ -29,6 +29,7 @@ class Engine:
         """[K] temperature of all points in mesh"""
 
         self.__volume_source = full(self.__num_points, 0.0) # todo fill me in properly
+        """[] volumetric sources"""
 
         self.__A = zeros((self.__num_points, self.__num_points))
         """[] A matrix in linear system AT^(n+1) = BT^(n)"""
