@@ -1,6 +1,8 @@
 from src.Config import Config
 from src.Engine import Engine
 
+from numpy import floor
+
 
 class Model:
     """
@@ -13,10 +15,25 @@ class Model:
         :param config: model configuration
         """
 
+        self.__d_time: float = 1e-3
+        """[s] fixed simulation time step"""
+
+        self.__num_time_steps: int = floor(config.get_end_time() / self.__d_time)
+        """[] number of timesteps in the simulation"""
+
+        # number of steps between snapshots
+        if config.get_num_saved_time_steps() < self.__num_time_steps:
+            # case where the number of saved timesteps is less than the total number of timesteps
+            self.__num_steps_between_logs: int = floor(self.__num_time_steps / config.get_num_saved_time_steps())
+            """number of steps between snapshots"""
+        else:
+            # case where the user requested to save more timesteps than there are available
+            self.__num_steps_between_logs: int = 1
+            """number of steps between snapshots"""
+
         # construct model
         self.__engine: Engine = Engine(config)
 
-        # todo create sensor observer class
 
     def run(self) -> None:
         """
@@ -33,4 +50,11 @@ class Model:
             self.__engine.update()
 
             # conditionally log data
-            # todo conditionally call log on sensor observer class
+
+
+    def get_d_time(self) -> float:
+        """
+        time step getter
+        :return: time step
+        """
+        return self.__d_time
