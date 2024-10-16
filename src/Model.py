@@ -24,7 +24,9 @@ class Model:
         # number of steps between snapshots
         if config.get_num_saved_time_steps() < self.__num_time_steps:
             # case where the number of saved timesteps is less than the total number of timesteps
-            self.__num_steps_between_logs: int = floor(self.__num_time_steps / config.get_num_saved_time_steps())
+            self.__num_steps_between_logs: int = floor(
+                self.__num_time_steps / config.get_num_saved_time_steps()
+            )
             """number of steps between snapshots"""
         else:
             # case where the user requested to save more timesteps than there are available
@@ -33,7 +35,6 @@ class Model:
 
         # construct model
         self.__engine: Engine = Engine(config)
-
 
     def run(self) -> None:
         """
@@ -50,7 +51,6 @@ class Model:
             self.__engine.update()
 
             # conditionally log data
-
 
     def get_d_time(self) -> float:
         """
