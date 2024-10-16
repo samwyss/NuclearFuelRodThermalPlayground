@@ -16,6 +16,7 @@ class Config:
         coolant_temp: float,
         core_heat_generation: float,
         num_saved_time_steps: int,
+        end_time: float,
     ):
         """
         Config constructor
@@ -25,6 +26,7 @@ class Config:
         :param coolant_temp: [K] coolant temperature
         :param core_heat_generation: [W/m^3] core heat generation
         :param num_saved_time_steps: [] number of saved time steps
+        :param end_time: end time of simulation
         """
         self.__fuel_thickness: float = fuel_thickness
         """[m] fuel thickness"""
@@ -43,6 +45,9 @@ class Config:
 
         self.__num_saved_time_steps: int = num_saved_time_steps
         """[] number of saved time steps"""
+
+        self.__end_time: float = end_time
+        """[s] end time of simulation"""
 
     def __repr__(self) -> dict[str, Any]:
         """modifies how Config is displayed"""
@@ -89,3 +94,10 @@ class Config:
         :return: number of saved time steps
         """
         return self.__num_saved_time_steps
+
+    def get_end_time(self) -> float:
+        """
+        end time getter
+        :return: end time of simulation
+        """
+        return self.__end_time

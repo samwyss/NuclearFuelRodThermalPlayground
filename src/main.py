@@ -14,6 +14,7 @@ def main():
     coolant_temp: float = 0.0  # todo this is temporary
     core_heat_generation: float = 0.0  # todo this is temporary
     num_saved_time_steps: int = 0  # todo this is temporary
+    end_time: float = 0.0  # todo this is temporary
     config = Config(
         fuel_thickness,
         cladding_thickness,
