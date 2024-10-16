@@ -74,6 +74,6 @@ class Engine:
         :return: None
         """
 
-        with open("temperature.csv", "a", newline="", encoding="utf-8") as file:
+        with open("./temperature.csv", "a", newline="", encoding="utf-8") as file:
             csv_writer = writer(file)
             csv_writer.writerow(self.__temperature)
