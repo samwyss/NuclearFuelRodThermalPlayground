@@ -8,12 +8,22 @@ def main():
     # todo add gui logic here
 
     # when "run" button or something is clicked run this code ----------------------------------------------------------
-    fuel_thickness: float = 0.0  # todo this is temporary and needs to be attached to GUI
-    cladding_thickness: float = 0.0  # todo this is temporary and needs to be attached to GUI
-    bulk_material_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    fuel_thickness: float = (
+        0.0  # todo this is temporary and needs to be attached to GUI
+    )
+    cladding_thickness: float = (
+        0.0  # todo this is temporary and needs to be attached to GUI
+    )
+    bulk_material_temp: float = (
+        0.0  # todo this is temporary and needs to be attached to GUI
+    )
     coolant_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
-    core_heat_generation: float = 0.0  # todo this is temporary and needs to be attached to GUI
-    num_saved_time_steps: int = 0  # todo this is temporary and needs to be attached to GUI
+    core_heat_generation: float = (
+        0.0  # todo this is temporary and needs to be attached to GUI
+    )
+    num_saved_time_steps: int = (
+        0  # todo this is temporary and needs to be attached to GUI
+    )
     end_time: float = 0.0  # todo this is temporary and needs to be attached to GUI
     config = Config(
         fuel_thickness,
