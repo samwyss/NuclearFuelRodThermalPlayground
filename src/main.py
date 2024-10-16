@@ -12,8 +12,8 @@ def main():
     cladding_thickness: float = 0.0  # todo this is temporary
     bulk_material_temp: float = 0.0  # todo this is temporary
     coolant_temp: float = 0.0  # todo this is temporary
-    core_heat_generation = 0.0  # todo this is temporary
-    num_saved_time_steps = 0  # todo this is temporary
+    core_heat_generation: float = 0.0  # todo this is temporary
+    num_saved_time_steps: int = 0  # todo this is temporary
     config = Config(
         fuel_thickness,
         cladding_thickness,
