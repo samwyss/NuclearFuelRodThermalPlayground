@@ -7,14 +7,14 @@ def main():
 
     # todo add gui logic here
 
-    # when "run" button or something is clicked run this code
-    fuel_thickness: float = 0.0  # todo this is temporary
-    cladding_thickness: float = 0.0  # todo this is temporary
-    bulk_material_temp: float = 0.0  # todo this is temporary
-    coolant_temp: float = 0.0  # todo this is temporary
-    core_heat_generation: float = 0.0  # todo this is temporary
-    num_saved_time_steps: int = 0  # todo this is temporary
-    end_time: float = 0.0  # todo this is temporary
+    # when "run" button or something is clicked run this code ----------------------------------------------------------
+    fuel_thickness: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    cladding_thickness: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    bulk_material_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    coolant_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    core_heat_generation: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    num_saved_time_steps: int = 0  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 0.0  # todo this is temporary and needs to be attached to GUI
     config = Config(
         fuel_thickness,
         cladding_thickness,
@@ -29,8 +29,11 @@ def main():
 
     # run model
     model.run()
+    # ------------------------------------------------------------------------------------------------------------------
 
+    # when post processing button is clicked run this code -------------------------------------------------------------
     # todo post processing
+    # ------------------------------------------------------------------------------------------------------------------
 
 
 # runs main
