@@ -25,7 +25,7 @@ class Engine:
         self.__cond = full(self.__num_points, 1.0) # todo fill me in properly
         """[] thermal conductivity of mesh"""
 
-        self.__temperature = full(self.__num_points, config.get_coolant_temp())
+        self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
         """[K] temperature of all points in mesh"""
 
         self.__volume_source = full(self.__num_points, 0.0) # todo fill me in properly
