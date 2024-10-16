@@ -25,6 +25,7 @@ def main():
         0  # todo this is temporary and needs to be attached to GUI
     )
     end_time: float = 0.0  # todo this is temporary and needs to be attached to GUI
+
     config = Config(
         fuel_thickness,
         cladding_thickness,
