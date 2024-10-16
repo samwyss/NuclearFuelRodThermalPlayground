@@ -19,6 +19,9 @@ class Engine:
         )
         """[] number of points in simulation domain"""
 
+        self.__current_time: float = 0.0
+        """[s] current simulation time"""
+
         self.__pos = linspace(0.0, 1.0, self.__num_points)  # todo fill me in properly
         """[m] radial location of all points in mesh"""
 
@@ -62,6 +65,8 @@ class Engine:
         :return: None
         """
 
+        # todo update current time
+
         # todo update material properties
 
         # todo matrix assembly
@@ -74,6 +79,12 @@ class Engine:
         :return: None
         """
 
+        # log temperature
         with open("./temperature.csv", "a", newline="", encoding="utf-8") as file:
             csv_writer = writer(file)
             csv_writer.writerow(self.__temperature)
+
+        # log time
+        with open("./time.csv", "a", newline="", encoding="utf-8") as file:
+            csv_writer = writer(file)
+            csv_writer.writerow([self.__current_time])
