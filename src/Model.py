@@ -42,11 +42,8 @@ class Model:
         :return: None
         """
 
-        # number of time steps to run
-        num_time_steps = 0  # todo calculate me
-
         # main time loop
-        for t_step in range(num_time_steps):
+        for t_step in range(self.__num_time_steps):
             # update temperature
             self.__engine.update()
 
