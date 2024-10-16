@@ -32,6 +32,7 @@ def main():
         coolant_temp,
         core_heat_generation,
         num_saved_time_steps,
+        end_time
     )
 
     # construct model
