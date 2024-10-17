@@ -50,6 +50,7 @@ class Model:
             # conditionally log data
             if 0 == t_step % self.__num_steps_between_logs:
                 self.__engine.log()
+                print(f"logged step {t_step} of {self.__num_time_steps}")
 
     def get_d_time(self) -> float:
         """
