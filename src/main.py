@@ -11,20 +11,33 @@ def main():
     fuel_thickness: float = (
         0.0  # todo this is temporary and needs to be attached to GUI
     )
+    """[m] thickness of fuel"""
+
     cladding_thickness: float = (
         0.0  # todo this is temporary and needs to be attached to GUI
     )
+    """[m] thickness of cladding"""
+
     bulk_material_temp: float = (
         0.0  # todo this is temporary and needs to be attached to GUI
     )
+    """[K] initial bulk material temperature"""
+
     coolant_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    """[K] temperature of coolant as T_infty"""
+
     core_heat_generation: float = (
         0.0  # todo this is temporary and needs to be attached to GUI
     )
+    """[W/m^3] volumetric heat generation rate of core"""
+
     num_saved_time_steps: int = (
         10  # todo this is temporary and needs to be attached to GUI
     )
+    """[] number of saved time steps"""
+
     end_time: float = 1  # todo this is temporary and needs to be attached to GUI
+    """[s] end time of simulation"""
 
     config = Config(
         fuel_thickness,
