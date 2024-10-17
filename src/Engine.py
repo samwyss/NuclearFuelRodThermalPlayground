@@ -1,5 +1,6 @@
 from typing import Any
-from numpy import full, linspace, zeros
+from numpy import full, linspace, zeros, dot
+from numpy.linalg import solve
 from csv import writer
 
 from Config import Config
@@ -8,7 +9,7 @@ from Config import Config
 class Engine:
     """provides a facade for operating the thermal solver"""
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, d_time: float):
         """
         Solver constructor
         :param config: Config object
@@ -22,13 +23,16 @@ class Engine:
         self.__current_time: float = 0.0
         """[s] current simulation time"""
 
-        self.__pos = linspace(0.0, 1.0, self.__num_points)  # todo fill me in properly
+        self.__delta_r = 1.0 / self.__num_points # todo this will likely need to be changed when material regions are added
+        """[m] radial step"""
+
+        self.__pos = linspace(self.__delta_r, 1.0, self.__num_points)  # todo fill me in properly
         """[m] radial location of all points in mesh"""
 
-        self.__alpha = full(self.__num_points, 1.0)  # todo fill me in properly
+        self.__alpha = full(self.__num_points, 0.143)  # todo fill me in properly
         """[] thermal diffusivity of mesh"""
 
-        self.__cond = full(self.__num_points, 1.0)  # todo fill me in properly
+        self.__cond = full(self.__num_points, 0.5918)  # todo fill me in properly
         """[] thermal conductivity of mesh"""
 
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
@@ -43,14 +47,27 @@ class Engine:
         self.__B = zeros((self.__num_points, self.__num_points))
         """[] B matrix in linear system AT^(n+1) = BT^(n)"""
 
-        # matrix assembly
-        for i in range(1, self.__num_points - 1):
-            # todo j - 1
-            # todo j
-            # todo j + 1
-            pass
+        # left boundary conditions
+        self.__A[0, 0] = 1.0
+        self.__B[0, 0] = 1.0
+        self.__temperature[0] = 1.0
 
-        # todo boundary conditions at r = 0 and r = 1
+        # right boundary conditions
+        self.__A[-1, -1] = 1.0
+        self.__B[-1, -1] = 1.0
+
+        # interior nodes
+        for i in range(1, self.__num_points - 1):
+
+            # A matrix
+            self.__A[i, i + 1] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 + 1.0 / (self.__pos[i] * self.__delta_r))
+            self.__A[i, i] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (-2.0 / self.__delta_r ** 2)
+            self.__A[i, i - 1] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 - 1.0 / (self.__pos[i] * self.__delta_r))
+
+            # B matrix
+            self.__B[i, i + 1] = 1.0 + (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 + 1.0 / (self.__pos[i] * self.__delta_r))
+            self.__B[i, i] = 1.0 + (self.__alpha[i] * d_time / 2.0) * (-2.0 / self.__delta_r ** 2)
+            self.__B[i, i - 1] = 1.0 + (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 - 1.0 / (self.__pos[i] * self.__delta_r))
 
     def __repr__(self) -> dict[str, Any]:
         """
@@ -73,6 +90,7 @@ class Engine:
         # todo matrix assembly
 
         # todo update temperature
+        self.__temperature = solve(self.__A, dot(self.__B, self.__temperature))
 
     def log(self) -> None:
         """

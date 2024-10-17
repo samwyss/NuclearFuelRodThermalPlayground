@@ -15,7 +15,7 @@ class Model:
         :param config: model configuration
         """
 
-        self.__d_time: float = 1e-3
+        self.__d_time: float = 1e-2
         """[s] fixed simulation time step"""
 
         self.__num_time_steps: int = int(floor(config.get_end_time() / self.__d_time))
@@ -34,7 +34,7 @@ class Model:
             """number of steps between snapshots"""
 
         # construct model
-        self.__engine: Engine = Engine(config)
+        self.__engine: Engine = Engine(config, self.__d_time)
 
     def run(self) -> None:
         """
