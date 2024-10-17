@@ -59,13 +59,14 @@ class Engine:
         """
         return self.__dict__
 
-    def update(self) -> None:
+    def update(self, time_step: float) -> None:
         """
         updates model to the next timestep
         :return: None
         """
 
         # todo update current time
+        self.__current_time += time_step
 
         # todo update material properties
 
