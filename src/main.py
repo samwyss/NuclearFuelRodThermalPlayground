@@ -52,7 +52,7 @@ def main():
     # construct model
     model: Model = Model(config)
 
-    # run model
+    # run model here
     model.run()
     # ------------------------------------------------------------------------------------------------------------------
 
