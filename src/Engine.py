@@ -65,7 +65,7 @@ class Engine:
         :return: None
         """
 
-        # todo update current time
+        # update current time
         self.__current_time += time_step
 
         # todo update material properties
