@@ -46,14 +46,15 @@ def exitwindow():
 
 def startsim():
     print("\nSimulation is running.")
-    fuel_thickness = entry_1.get()
-    cladding_thickness = entry_2.get()
-    coolant_temp = entry_3.get()
-    bulk_material_temp = entry_4.get()
-    core_heat_generation = entry_5.get()
-    num_saved_time_steps = entry_6.get()
-    end_time = entry_7.get()
+    fuel_thickness = float(entry_1.get())
+    cladding_thickness = float(entry_2.get())
+    coolant_temp = float(entry_3.get())
+    bulk_material_temp = float(entry_4.get())
+    core_heat_generation = float(entry_5.get())
+    num_saved_time_steps = float(entry_6.get())
+    end_time = float(entry_7.get())
     print("All saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
+    print("Let's add fuel thickness and cladding thickness: ", (fuel_thickness + cladding_thickness)) #checking that numbers are being returned as floats
     return
 
 button_1 = Button(root, text = "Exit", command = exitwindow)
