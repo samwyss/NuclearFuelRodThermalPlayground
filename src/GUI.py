@@ -6,7 +6,9 @@ root.geometry("900x700")
 
 #creates the frame's title and attempts to center it
 title = Label(root, text = "Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg = "white", fg = "blue", font = 20)
+reminder = Label(root, text = "Please ensure that each input has an associated value. Do not leave any blank boxes.", bg = "white", fg = "red", font = 8)
 title.grid(row = 0, column = 0)
+reminder.grid(row = 1, column = 0)
 
 #creates labels for each input
 label_1 = Label(root, text = "Fuel Thickness [m]", bg = "white", fg = "blue", font = 15)
@@ -70,7 +72,7 @@ def startsim():
     num_saved_time_steps = float(saved.get())
     end_time = float(endtim.get())
     print("All saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
-    print("Let's add fuel thickness and cladding thickness: ", (fuel_thickness + cladding_thickness)) #checking that numbers are being returned as floats
+    #print("Let's add fuel thickness and cladding thickness: ", (fuel_thickness + cladding_thickness)) #checking that numbers are being returned as floats
     return
 
 #creates our buttons, binds functions to them, and places them in the window
