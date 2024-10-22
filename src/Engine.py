@@ -29,6 +29,11 @@ class Engine:
         self.__pos = linspace(self.__delta_r, 1.0, self.__num_points)  # todo fill me in properly
         """[m] radial location of all points in mesh"""
 
+        # write position
+        with open("./position.csv", "a", newline="", encoding="utf-8") as file:
+            csv_writer = writer(file)
+            csv_writer.writerow(self.__pos)
+
         self.__alpha = full(self.__num_points, 0.143)  # todo fill me in properly
         """[] thermal diffusivity of mesh"""
 
