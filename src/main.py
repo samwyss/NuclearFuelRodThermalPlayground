@@ -32,11 +32,11 @@ def main():
     """[W/m^3] volumetric heat generation rate of core"""
 
     num_saved_time_steps: int = (
-        10  # todo this is temporary and needs to be attached to GUI
+        60  # todo this is temporary and needs to be attached to GUI
     )
     """[] number of saved time steps"""
 
-    end_time: float = 1.0  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 60  # todo this is temporary and needs to be attached to GUI
     """[s] end time of simulation"""
 
     config = Config(
