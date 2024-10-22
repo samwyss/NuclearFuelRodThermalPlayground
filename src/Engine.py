@@ -47,9 +47,12 @@ class Engine:
         self.__b = zeros(self.__num_points)
         """[] B vector in linear system"""
 
+        self.__temp_infty = 0.0
+
         # left boundary conditions
         self.__A[0, 0] = 1.0
         self.__b[0] = 1.0
+        self.__b[-1] = ((self.__pos[-2] + self.__pos[-1]) ** 2 * self.__temperature[-2] + (2 * self.__pos[-1] + self.__delta_r) ** 2 * self.__temp_infty) / ((self.__pos[-2] + self.__pos[-1]) ** 2 + (2 * self.__pos[-1] + self.__delta_r) ** 2)
         self.__temperature[0] = 1.0
 
         # right boundary conditions
@@ -90,6 +93,8 @@ class Engine:
         # b vector assembly
         for i in range(1, self.__num_points - 1):
             self.__b[i] = (1.0 / d_time - self.__alpha[i] / self.__delta_r ** 2) * self.__temperature[i] + (self.__alpha[i] / (2.0 * self.__delta_r ** 2) + self.__alpha[i] / (2.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i + 1] + (self.__alpha[i] / (2.0 * self.__delta_r ** 2) - self.__alpha[i] / (2.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i - 1]
+
+        self.__b[-1] = ((self.__pos[-2] + self.__pos[-1]) ** 2 * self.__temperature[-2] + (2 * self.__pos[-1] + self.__delta_r) ** 2 * self.__temp_infty) / ((self.__pos[-2] + self.__pos[-1]) ** 2 + (2 * self.__pos[-1] + self.__delta_r) ** 2)
 
         # todo update temperature
         self.__temperature = solve(self.__A, self.__b)
