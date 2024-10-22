@@ -5,19 +5,19 @@ root = Tk()
 root.geometry("1000x600")
 
 #creates the frame's title and attempts to center it
-title = Label(root, text = "Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg = "white", fg = "blue", font = ('Helvetica', 18))
+title = Label(root, text = "Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg = "white", fg = "#7e57c2", font = ('Helvetica', 18))
 reminder = Label(root, text = "Please ensure that each input has an associated value. Do not leave any blank boxes.", bg = "white", fg = "red", font = ('Helvetica', 10))
 title.grid(row = 0, column = 0)
 reminder.grid(row = 1, column = 0)
 
 #creates labels for each input
-label_1 = Label(root, text = "Fuel Thickness [m]", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_2 = Label(root, text = "Cladding Thickness [m]", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_3 = Label(root, text = "Coolant Temperature [K]", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_4 = Label(root, text = "Initial Material Bulk Temperature [K]", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_5 = Label(root, text = "Fuel Volumetric Heat Generation [W/m\u00b3]", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_6 = Label(root, text = "Number of Saved Time Steps", bg = "white", fg = "blue", font = ('Helvetica', 15))
-label_7 = Label(root, text = "End Time [s]", bg = "white", fg = "blue", font = ('Helvetica', 15))
+label_1 = Label(root, text = "Fuel Thickness [m]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_2 = Label(root, text = "Cladding Thickness [m]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_3 = Label(root, text = "Coolant Temperature [K]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_4 = Label(root, text = "Initial Material Bulk Temperature [K]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_5 = Label(root, text = "Fuel Volumetric Heat Generation [W/m\u00b3]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_6 = Label(root, text = "Number of Saved Time Steps", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_7 = Label(root, text = "End Time [s]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
 
 #defines a string variable for each input, used later to convert from string to text to float
 fuelthick = StringVar()
@@ -76,8 +76,8 @@ def startsim():
     return
 
 #creates our buttons, binds functions to them, and places them in the window
-button_1 = Button(root, text = "Exit", command = exitwindow)
-button_2 = Button(root, text = "Run", command = startsim)
+button_1 = Button(root, text = "Exit", command = exitwindow, activebackground = '#dfc5fe')
+button_2 = Button(root, text = "Run", command = startsim, activebackground = '#dfc5fe')
 button_1.grid(row = 20, column = 1)
 button_2.grid(row = 20, column = 2)
 
