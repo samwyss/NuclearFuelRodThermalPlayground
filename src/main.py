@@ -19,11 +19,11 @@ def main():
     """[m] thickness of cladding"""
 
     bulk_material_temp: float = (
-        0.0  # todo this is temporary and needs to be attached to GUI
+        300.0  # todo this is temporary and needs to be attached to GUI
     )
     """[K] initial bulk material temperature"""
 
-    coolant_temp: float = 0.0  # todo this is temporary and needs to be attached to GUI
+    coolant_temp: float = 300.0  # todo this is temporary and needs to be attached to GUI
     """[K] temperature of coolant as T_infty"""
 
     core_heat_generation: float = (
@@ -32,11 +32,11 @@ def main():
     """[W/m^3] volumetric heat generation rate of core"""
 
     num_saved_time_steps: int = (
-        60  # todo this is temporary and needs to be attached to GUI
+        100  # todo this is temporary and needs to be attached to GUI
     )
     """[] number of saved time steps"""
 
-    end_time: float = 60  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 5.0  # todo this is temporary and needs to be attached to GUI
     """[s] end time of simulation"""
 
     config = Config(
