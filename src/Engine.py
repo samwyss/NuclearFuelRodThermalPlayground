@@ -23,10 +23,10 @@ class Engine:
         self.__current_time: float = 0.0
         """[s] current simulation time"""
 
-        self.__delta_r = 1.0 / self.__num_points # todo this will likely need to be changed when material regions are added
+        self.__delta_r = 1.0 / (self.__num_points - 1) # todo this will likely need to be changed when material regions are added
         """[m] radial step"""
 
-        self.__pos = linspace(self.__delta_r, 1.0, self.__num_points)  # todo fill me in properly
+        self.__pos = linspace(0.0, 1.0, self.__num_points)  # todo fill me in properly
         """[m] radial location of all points in mesh"""
 
         self.__alpha = full(self.__num_points, 0.143)  # todo fill me in properly
@@ -57,16 +57,18 @@ class Engine:
 
         # interior nodes
         for i in range(1, self.__num_points - 1):
+            b = - self.__alpha[i] / (2.0 * self.__delta_r ** 2)
+            c = - self.__alpha[i] / (2.0 * self.__delta_r ** 2)
+            a = 1.0 / d_time - (b + c)
+            d = - c * self.__temperature[i - 1] + (1 / d_time + b + c) * self.__temperature[i] - b * self.__temperature[i + 1]
 
             # A matrix
-            self.__A[i, i + 1] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 + 1.0 / (self.__pos[i] * self.__delta_r))
-            self.__A[i, i] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (-2.0 / self.__delta_r ** 2)
-            self.__A[i, i - 1] = 1.0 - (self.__alpha[i] * d_time / 2.0) * (1.0 / self.__delta_r ** 2 - 1.0 / (self.__pos[i] * self.__delta_r))
+            self.__A[i, i + 1] = b
+            self.__A[i, i] = a
+            self.__A[i, i - 1] = c
 
-            # B matrix todo add proper self.temperature values, this appears stable
-            self.__b[i] += 1.0 + (self.__alpha[i] * d_time / 2.0) * (self.__temperature[i - 1]/ self.__delta_r ** 2 + 1.0 / (self.__pos[i] * self.__delta_r))
-            self.__b[i] += 1.0 + (self.__alpha[i] * d_time / 2.0) * (-2.0 * self.__temperature[i] / self.__delta_r ** 2)
-            self.__b[i] += 1.0 + (self.__alpha[i] * d_time / 2.0) * (self.__temperature[i + 1] / self.__delta_r ** 2 - 1.0 / (self.__pos[i] * self.__delta_r))
+            # B matrix
+            self.__b[i] = d
 
     def __repr__(self) -> dict[str, Any]:
         """
@@ -90,7 +92,11 @@ class Engine:
 
         # b vector assembly
         for i in range(1, self.__num_points - 1):
-            self.__b[i] = 1.0 + (self.__alpha[i] * d_time / 2.0) * (self.__temperature[i - 1]/ self.__delta_r ** 2 + 1.0 / (self.__pos[i] * self.__delta_r)) + 1.0 + (self.__alpha[i] * d_time / 2.0) * (-2.0 * self.__temperature[i] / self.__delta_r ** 2) + 1.0 + (self.__alpha[i] * d_time / 2.0) * (self.__temperature[i + 1] / self.__delta_r ** 2 - 1.0 / (self.__pos[i] * self.__delta_r))
+            b = - self.__alpha[i] / (2.0 * self.__delta_r ** 2)
+            c = - self.__alpha[i] / (2.0 * self.__delta_r ** 2)
+            d = - c * self.__temperature[i - 1] + (1 / d_time + b + c) * self.__temperature[i] - b * self.__temperature[i + 1]
+
+            self.__b[i] = d
 
         # todo update temperature
         self.__temperature = solve(self.__A, self.__b)
