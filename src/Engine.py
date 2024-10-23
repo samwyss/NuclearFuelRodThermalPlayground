@@ -97,7 +97,7 @@ class Engine:
 
         # todo update material properties
 
-        # todo matrix assembly
+        # todo a matrix assembly
 
         # b vector assembly
         for i in range(1, self.__num_points - 1):
@@ -109,7 +109,7 @@ class Engine:
         self.__b[1:25] += self.__alpha[1:25] * d_time * 1e6 / self.__cond[25]
 
 
-        # todo update temperature
+        # update temperature
         self.__temperature = solve(self.__A, self.__b)
 
     def log(self) -> None:
