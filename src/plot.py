@@ -9,6 +9,7 @@ min_temp = np.min(temps)
 min_pos = np.min(pos)
 max_pos = np.max(pos)
 
+plt.rcParams["figure.dpi"] = 300
 
 for i in range(temps.shape[0]):
     plt.plot(pos, temps[i, :], label=f"{time[i]:.3f}")
