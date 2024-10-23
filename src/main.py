@@ -8,6 +8,10 @@ from shutil import rmtree
 def main():
     """main driver function for ThermalPlayground"""
 
+    # todo add gui logic here
+
+    # when "run" button or something is clicked run this code ----------------------------------------------------------
+
     # remove old files
     if path.exists("./out"):
         print("removing old output files")
@@ -16,11 +20,6 @@ def main():
     # make new folder for output files
     mkdir("./out")
 
-
-
-    # todo add gui logic here
-
-    # when "run" button or something is clicked run this code ----------------------------------------------------------
     fuel_thickness: float = (
         1.0  # todo this is temporary and needs to be attached to GUI
     )
