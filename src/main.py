@@ -50,7 +50,7 @@ def main():
     )
     """[] number of saved time steps"""
 
-    end_time: float = 5.0  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 2.0  # todo this is temporary and needs to be attached to GUI
     """[s] end time of simulation"""
 
     config = Config(
