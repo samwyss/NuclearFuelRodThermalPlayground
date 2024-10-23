@@ -22,7 +22,7 @@ def main():
 
     # when "run" button or something is clicked run this code ----------------------------------------------------------
     fuel_thickness: float = (
-        0.0  # todo this is temporary and needs to be attached to GUI
+        1.0  # todo this is temporary and needs to be attached to GUI
     )
     """[m] thickness of fuel"""
 
@@ -40,7 +40,7 @@ def main():
     """[K] temperature of coolant as T_infty"""
 
     core_heat_generation: float = (
-        0.0  # todo this is temporary and needs to be attached to GUI
+        1e6  # todo this is temporary and needs to be attached to GUI
     )
     """[W/m^3] volumetric heat generation rate of core"""
 

@@ -23,10 +23,10 @@ class Engine:
         self.__current_time: float = 0.0
         """[s] current simulation time"""
 
-        self.__delta_r = 1.0 / (self.__num_points - 1) # todo this will likely need to be changed when material regions are added
+        self.__delta_r = 1.0 / (self.__num_points - 1) # todo adjust for fuel thickness
         """[m] radial step"""
 
-        self.__pos = linspace(0.0, 1.0, self.__num_points)  # todo fill me in properly
+        self.__pos = linspace(0.0, config.get_fuel_thickness(), self.__num_points)  # todo adjust for clad thickness
         """[m] radial location of all points in mesh"""
 
         # write position
@@ -43,7 +43,7 @@ class Engine:
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
         """[K] temperature of all points in mesh"""
 
-        self.__volume_source = full(self.__num_points, 0.0)  # todo fill me in properly
+        self.__volume_source = full(self.__num_points, config.get_core_heat_generation())
         """[] volumetric sources"""
 
         self.__A = zeros((self.__num_points, self.__num_points))
