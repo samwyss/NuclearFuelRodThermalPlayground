@@ -43,8 +43,11 @@ class Engine:
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
         """[K] temperature of all points in mesh"""
 
-        self.__volume_source = full(self.__num_points, config.get_core_heat_generation())
+        self.__volume_source = zeros(self.__num_points)
         """[] volumetric sources"""
+
+        # set volume source in fuel
+        self.__volume_source[1:25] = config.get_core_heat_generation()
 
         self.__A = zeros((self.__num_points, self.__num_points))
         """[] A matrix in linear system"""
@@ -106,7 +109,7 @@ class Engine:
         self.__b[-1] = 2.0 * self.__alpha[-1] * d_time / self.__delta_r ** 2 * self.__temperature[-2] + (2.0 - 2.0 * self.__alpha[-1] * d_time / self.__delta_r ** 2 * (1.0 + self.__delta_r * self.__h_infty / self.__cond[-1])) * self.__temperature[-1] + 4.0 * self.__alpha[-1] * d_time / self.__delta_r ** 2 * (self.__delta_r * self.__h_infty * self.__temp_infty / self.__cond[-1])
 
         # todo source
-        self.__b[1:25] += self.__alpha[1:25] * d_time * 1e6 / self.__cond[25]
+        self.__b += self.__alpha * d_time * self.__volume_source / self.__cond
 
 
         # update temperature
