@@ -1,9 +1,22 @@
 from src.Config import Config
 from src.Model import Model
 
+from os import mkdir, path
+from shutil import rmtree
+
 
 def main():
     """main driver function for ThermalPlayground"""
+
+    # remove old files
+    if path.exists("./out"):
+        print("removing old output files")
+        rmtree("./out")
+
+    # make new folder for output files
+    mkdir("./out")
+
+
 
     # todo add gui logic here
 
