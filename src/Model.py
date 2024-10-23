@@ -1,7 +1,7 @@
+from numpy import floor
+
 from src.Config import Config
 from src.Engine import Engine
-
-from numpy import floor
 
 
 class Model:
@@ -44,13 +44,13 @@ class Model:
 
         # main time loop
         for t_step in range(self.__num_time_steps):
-            # update temperature
-            self.__engine.update(self.__d_time)
-
             # conditionally log data
             if 0 == t_step % self.__num_steps_between_logs:
                 self.__engine.log()
                 print(f"logged step {t_step} of {self.__num_time_steps}")
+
+            # update temperature
+            self.__engine.update(self.__d_time)
 
     def get_d_time(self) -> float:
         """
