@@ -3,7 +3,8 @@
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
     <option name="enabledOnSave" value="true" />
-    <option name="sdkName" value="Python 3.10 (CS501)" />
+    <option name="pathToExecutable" value="/usr/bin/black" />
+    <option name="sdkName" value="Python 3.10 (cs501)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (cs501)" project-jdk-type="Python SDK" />
 </project>
