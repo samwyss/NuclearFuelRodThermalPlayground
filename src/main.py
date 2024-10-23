@@ -21,7 +21,7 @@ def main():
     mkdir("./out")
 
     fuel_thickness: float = (
-        0.1  # todo this is temporary and needs to be attached to GUI
+        0.2  # todo this is temporary and needs to be attached to GUI
     )
     """[m] thickness of fuel"""
 
