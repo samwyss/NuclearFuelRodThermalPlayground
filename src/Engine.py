@@ -17,14 +17,16 @@ class Engine:
         """
 
         self.__num_points = (
-            100  # todo need to determine this, maybe 10 elements for each region?
+            50  # todo need to determine this, maybe 10 elements for each region?
         )
         """[] number of points in simulation domain"""
 
         self.__current_time: float = 0.0
         """[s] current simulation time"""
 
-        self.__delta_r = 1.0 / (self.__num_points - 1)  # todo adjust for fuel thickness
+        self.__delta_r = config.get_fuel_thickness() / (
+            self.__num_points - 1
+        )  # todo adjust for clad thickness
         """[m] radial step"""
 
         self.__pos = linspace(
@@ -37,7 +39,7 @@ class Engine:
             csv_writer = writer(file)
             csv_writer.writerow(self.__pos)
 
-        self.__alpha = full(self.__num_points, 0.143)  # todo fill me in properly
+        self.__alpha = full(self.__num_points, 0.143e-6)  # todo fill me in properly
         """[] thermal diffusivity of mesh"""
 
         self.__cond = full(self.__num_points, 0.5918)  # todo fill me in properly
@@ -177,7 +179,7 @@ class Engine:
         )
 
         # todo source
-        self.__b += self.__alpha * d_time * self.__volume_source / self.__cond
+        self.__b += self.__alpha * self.__volume_source / self.__cond
 
         # update temperature
         self.__temperature = solve(self.__A, self.__b)
