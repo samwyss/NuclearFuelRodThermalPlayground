@@ -1,8 +1,8 @@
-from src.Config import Config
-from src.Model import Model
-
 from os import mkdir, path
 from shutil import rmtree
+
+from src.Config import Config
+from src.Model import Model
 
 
 def main():
@@ -35,7 +35,9 @@ def main():
     )
     """[K] initial bulk material temperature"""
 
-    coolant_temp: float = 300.0  # todo this is temporary and needs to be attached to GUI
+    coolant_temp: float = (
+        300.0  # todo this is temporary and needs to be attached to GUI
+    )
     """[K] temperature of coolant as T_infty"""
 
     core_heat_generation: float = (
