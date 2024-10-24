@@ -21,7 +21,7 @@ def main():
     mkdir("./out")
 
     fuel_thickness: float = (
-        0.2  # todo this is temporary and needs to be attached to GUI
+        0.1  # todo this is temporary and needs to be attached to GUI
     )
     """[m] thickness of fuel"""
 
@@ -50,7 +50,7 @@ def main():
     )
     """[] number of saved time steps"""
 
-    end_time: float = 7200.0  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 28800.0  # todo this is temporary and needs to be attached to GUI
     """[s] end time of simulation"""
 
     config = Config(
