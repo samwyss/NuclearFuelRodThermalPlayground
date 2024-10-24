@@ -39,10 +39,10 @@ class Engine:
             csv_writer = writer(file)
             csv_writer.writerow(self.__pos)
 
-        self.__alpha = full(self.__num_points, 0.143e-6)  # todo fill me in properly
+        self.__alpha = full(self.__num_points, 4.2e-6)  # todo fill me in properly
         """[] thermal diffusivity of mesh"""
 
-        self.__cond = full(self.__num_points, 0.5918)  # todo fill me in properly
+        self.__cond = full(self.__num_points, 16.2)  # todo fill me in properly
         """[] thermal conductivity of mesh"""
 
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
@@ -178,7 +178,7 @@ class Engine:
             * (self.__delta_r * self.__h_infty * self.__temp_infty / self.__cond[-1])
         )
 
-        # todo source
+        # add source to b
         self.__b += self.__alpha * self.__volume_source / self.__cond
 
         # update temperature
