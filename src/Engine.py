@@ -39,10 +39,10 @@ class Engine:
             csv_writer = writer(file)
             csv_writer.writerow(self.__pos)
 
-        self.__alpha = full(self.__num_points, 4.2e-6)  # todo fill me in properly
+        self.__alpha = full(self.__num_points, 1e-6)  # todo fill me in properly
         """[] thermal diffusivity of mesh"""
 
-        self.__cond = full(self.__num_points, 16.2)  # todo fill me in properly
+        self.__cond = full(self.__num_points, 10.0)  # todo fill me in properly
         """[] thermal conductivity of mesh"""
 
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
@@ -52,7 +52,8 @@ class Engine:
         """[] volumetric sources"""
 
         # set volume source in fuel
-        self.__volume_source[1:25] = config.get_core_heat_generation()
+        self.__volume_source[0:-1] = config.get_core_heat_generation()
+        self.__volume_source[0] *= 2
 
         self.__A = zeros((self.__num_points, self.__num_points))
         """[] A matrix in linear system"""
@@ -63,12 +64,19 @@ class Engine:
         self.__temp_infty = config.get_coolant_temp()
         """[K] reference temperature of coolant"""
 
-        self.__h_infty = 1.0  # todo fill me in correctly
+        self.__h_infty = 100.0  # todo fill me in correctly
         """[] heat transfer coefficient of cladding at outer edge"""
 
-        # left boundary conditions (reflective BC s.t. T|r=0 = T|r=dr)
-        self.__A[0, 0] = 1.0
-        self.__A[0, 1] = -1.0
+        # left boundary conditions (reflective)
+        self.__A[0, 0] = 1.0 / d_time + self.__alpha[0] / (2.0 * self.__delta_r**2)
+        self.__A[0, 1] = -self.__alpha[0] / (2.0 * self.__delta_r**2)
+        self.__b[0] = (
+            1.0 / d_time - self.__alpha[0] / (2.0 * self.__delta_r**2)
+        ) * self.__temperature[0] + (
+            self.__alpha[0] / (2.0 * self.__delta_r**2)
+        ) * self.__temperature[
+            1
+        ]
 
         # right boundary conditions (convective robbin BC)
         self.__A[-1, -2] = -2.0 * self.__alpha[-1] * d_time / self.__delta_r**2
@@ -177,6 +185,14 @@ class Engine:
             / self.__delta_r**2
             * (self.__delta_r * self.__h_infty * self.__temp_infty / self.__cond[-1])
         )
+
+        self.__b[0] = (
+            1.0 / d_time - self.__alpha[0] / (2.0 * self.__delta_r**2)
+        ) * self.__temperature[0] + (
+            self.__alpha[0] / (2.0 * self.__delta_r**2)
+        ) * self.__temperature[
+            1
+        ]
 
         # add source to b
         self.__b += self.__alpha * self.__volume_source / self.__cond
