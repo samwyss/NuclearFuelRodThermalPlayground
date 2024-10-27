@@ -71,7 +71,7 @@ def startsim():
     core_heat_generation = float(fuelvol.get())
     num_saved_time_steps = float(saved.get())
     end_time = float(endtim.get())
-    print("All saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
+    print("\nAll saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
     #print("Let's add fuel thickness and cladding thickness: ", (fuel_thickness + cladding_thickness)) #checking that numbers are being returned as floats
     return
 
