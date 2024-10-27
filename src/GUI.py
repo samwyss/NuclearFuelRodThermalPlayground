@@ -17,7 +17,7 @@ label_3 = Label(root, text = "Coolant Temperature [K]", bg = "white", fg = "#7e5
 label_4 = Label(root, text = "Initial Material Bulk Temperature [K]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
 label_5 = Label(root, text = "Fuel Volumetric Heat Generation [W/m\u00b3]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
 label_6 = Label(root, text = "Number of Saved Time Steps", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_7 = Label(root, text = "End Time [s]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+label_7 = Label(root, text = "Total Simulation Time [s]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
 
 #defines a string variable for each input, used later to convert from string to text to float
 fuelthick = StringVar()
