@@ -1,3 +1,6 @@
+from os import mkdir, path
+from shutil import rmtree
+
 from src.Config import Config
 from src.Model import Model
 
@@ -8,8 +11,17 @@ def main():
     # todo add gui logic here
 
     # when "run" button or something is clicked run this code ----------------------------------------------------------
+
+    # remove old files
+    if path.exists("./out"):
+        print("removing old output files")
+        rmtree("./out")
+
+    # make new folder for output files
+    mkdir("./out")
+
     fuel_thickness: float = (
-        0.0  # todo this is temporary and needs to be attached to GUI
+        0.1  # todo this is temporary and needs to be attached to GUI
     )
     """[m] thickness of fuel"""
 
@@ -23,20 +35,22 @@ def main():
     )
     """[K] initial bulk material temperature"""
 
-    coolant_temp: float = 300.0  # todo this is temporary and needs to be attached to GUI
+    coolant_temp: float = (
+        300.0  # todo this is temporary and needs to be attached to GUI
+    )
     """[K] temperature of coolant as T_infty"""
 
     core_heat_generation: float = (
-        0.0  # todo this is temporary and needs to be attached to GUI
+        1e6  # todo this is temporary and needs to be attached to GUI
     )
     """[W/m^3] volumetric heat generation rate of core"""
 
     num_saved_time_steps: int = (
-        100  # todo this is temporary and needs to be attached to GUI
+        10  # todo this is temporary and needs to be attached to GUI
     )
     """[] number of saved time steps"""
 
-    end_time: float = 5.0  # todo this is temporary and needs to be attached to GUI
+    end_time: float = 28800.0  # todo this is temporary and needs to be attached to GUI
     """[s] end time of simulation"""
 
     config = Config(

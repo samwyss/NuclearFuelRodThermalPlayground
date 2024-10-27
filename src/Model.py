@@ -1,7 +1,7 @@
+from numpy import floor
+
 from src.Config import Config
 from src.Engine import Engine
-
-from numpy import floor
 
 
 class Model:
@@ -15,7 +15,7 @@ class Model:
         :param config: model configuration
         """
 
-        self.__d_time: float = 1e-3
+        self.__d_time: float = 1e-1
         """[s] fixed simulation time step"""
 
         self.__num_time_steps: int = int(floor(config.get_end_time() / self.__d_time))
@@ -44,13 +44,17 @@ class Model:
 
         # main time loop
         for t_step in range(self.__num_time_steps):
-            # update temperature
-            self.__engine.update(self.__d_time)
-
             # conditionally log data
             if 0 == t_step % self.__num_steps_between_logs:
                 self.__engine.log()
                 print(f"logged step {t_step} of {self.__num_time_steps}")
+
+            # update temperature
+            self.__engine.update(self.__d_time)
+
+        # log final time
+        self.__engine.log()
+        print(f"logged step {self.__num_time_steps} of {self.__num_time_steps}")
 
     def get_d_time(self) -> float:
         """
