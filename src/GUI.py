@@ -71,8 +71,10 @@ def startsim():
     core_heat_generation = float(fuelvol.get())
     num_saved_time_steps = float(saved.get())
     end_time = float(endtim.get())
-    print("\nAll saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
-    #print("Let's add fuel thickness and cladding thickness: ", (fuel_thickness + cladding_thickness)) #checking that numbers are being returned as floats
+    if fuel_thickness or cladding_thickness or coolant_temp or bulk_material_temp or core_heat_generation or num_saved_time_steps or end_time < 0:
+        print("\nMake sure all input values are postive.")
+    else:
+        print("\nAll saved entries are as follows: ", fuel_thickness, cladding_thickness,coolant_temp, bulk_material_temp,core_heat_generation, num_saved_time_steps, end_time)
     return
 
 #creates our buttons, binds functions to them, and places them in the window
