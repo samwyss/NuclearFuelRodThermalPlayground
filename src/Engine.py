@@ -52,8 +52,7 @@ class Engine:
         """[] volumetric sources"""
 
         # set volume source in fuel
-        self.__volume_source[0:-1] = config.get_core_heat_generation()
-        self.__volume_source[0] *= 2
+        self.__volume_source = full(self.__num_points, config.get_core_heat_generation())
 
         self.__A = zeros((self.__num_points, self.__num_points))
         """[] A matrix in linear system"""
@@ -79,27 +78,14 @@ class Engine:
         ]
 
         # right boundary conditions (convective robbin BC)
-        self.__A[-1, -2] = -2.0 * self.__alpha[-1] * d_time / self.__delta_r**2
-        self.__A[-1, -1] = 2.0 + 2.0 * self.__alpha[-1] * d_time / self.__delta_r**2 * (
-            1.0 + self.__delta_r * self.__h_infty / self.__cond[-1]
-        )
-        self.__b[-1] = (
-            2.0 * self.__alpha[-1] * d_time / self.__delta_r**2 * self.__temperature[-2]
-            + (
-                2.0
-                - 2.0
-                * self.__alpha[-1]
-                * d_time
-                / self.__delta_r**2
-                * (1.0 + self.__delta_r * self.__h_infty / self.__cond[-1])
-            )
-            * self.__temperature[-1]
-            + 4.0
-            * self.__alpha[-1]
-            * d_time
-            / self.__delta_r**2
-            * (self.__delta_r * self.__h_infty * self.__temp_infty / self.__cond[-1])
-        )
+        a1 = 1.0 / d_time + self.__alpha[-1] / self.__delta_r**2
+        a2 = 1.0 / d_time - self.__alpha[-1] / self.__delta_r**2
+        b = self.__alpha[-1] / (2.0 * self.__delta_r**2) + self.__alpha[-1] / (2.0 * self.__pos[-1] * self.__delta_r)
+        c = self.__alpha[-1] / (2.0 * self.__delta_r**2) - self.__alpha[-1] / (2.0 * self.__pos[-1] * self.__delta_r)
+        e = 2.0 * self.__delta_r * self.__h_infty / self.__cond[-1]
+        self.__A[-1,-1] = a1 + b * e
+        self.__A[-1,-2] = - (c + b)
+        self.__b[-1] = (a2 - b * e) * self.__temperature[-1] + (c + b) * self.__temperature[-2] + (2.0 * b * e) * self.__temp_infty
 
         # interior nodes
         for i in range(1, self.__num_points - 1):
@@ -151,7 +137,7 @@ class Engine:
 
         # todo a matrix assembly
 
-        # b vector assembly
+        # bulk material
         for i in range(1, self.__num_points - 1):
             self.__b[i] = (
                 (1.0 / d_time - self.__alpha[i] / self.__delta_r**2)
@@ -168,24 +154,15 @@ class Engine:
                 * self.__temperature[i - 1]
             )
 
-        self.__b[-1] = (
-            2.0 * self.__alpha[-1] * d_time / self.__delta_r**2 * self.__temperature[-2]
-            + (
-                2.0
-                - 2.0
-                * self.__alpha[-1]
-                * d_time
-                / self.__delta_r**2
-                * (1.0 + self.__delta_r * self.__h_infty / self.__cond[-1])
-            )
-            * self.__temperature[-1]
-            + 4.0
-            * self.__alpha[-1]
-            * d_time
-            / self.__delta_r**2
-            * (self.__delta_r * self.__h_infty * self.__temp_infty / self.__cond[-1])
-        )
+        # robbin bc
+        a2 = 1.0 / d_time - self.__alpha[-1] / self.__delta_r ** 2
+        b = self.__alpha[-1] / (2.0 * self.__delta_r ** 2) + self.__alpha[-1] / (2.0 * self.__pos[-1] * self.__delta_r)
+        c = self.__alpha[-1] / (2.0 * self.__delta_r ** 2) - self.__alpha[-1] / (2.0 * self.__pos[-1] * self.__delta_r)
+        e = 2.0 * self.__delta_r * self.__h_infty / self.__cond[-1]
+        self.__b[-1] = (a2 - b * e) * self.__temperature[-1] + (c + b) * self.__temperature[-2] + (2.0 * b * e) * self.__temp_infty
 
+
+        # reflective bc
         self.__b[0] = (
             1.0 / d_time - self.__alpha[0] / (2.0 * self.__delta_r**2)
         ) * self.__temperature[0] + (
