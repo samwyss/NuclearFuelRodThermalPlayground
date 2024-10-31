@@ -7,7 +7,7 @@ from tkinter import *
 
 
 # GUI starts, initializes inputs, and calls Model when "Run" is pressed -------------------------------------------------------------
-def gui():
+def main():
     """main driver function for ThermalPlayground"""
 
     # creating basic frame, background, and layout
@@ -15,7 +15,7 @@ def gui():
     root.geometry("1000x600")
 
     # creates the frame's title and centers it
-    title = Label(root, text="Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg="white",
+    title = Label(root, text="Pseudo 3D Heat Generation Simulation for Nuclear Fuel", bg="white",
                   fg="#7e57c2", font=('Helvetica', 18))
     reminder = Label(root, text="Please ensure that each input has an associated value. Do not leave any blank boxes.",
                      bg="white", fg="red", font=('Helvetica', 10))
