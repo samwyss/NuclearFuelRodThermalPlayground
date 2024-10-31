@@ -11,13 +11,14 @@ max_pos = np.max(pos)
 
 plt.rcParams["figure.dpi"] = 300
 
-for i in range(temps.shape[0]):
-    plt.plot(pos, temps[i, :], label=f"{time[i]:.3f}")
+r = np.linspace(0, 0.1, 1000)
+plt.plot(r, (1e6*(0.2**2 - r**2)) / (4 * 10), label="Theoretical Steady State")
+plt.plot(pos, temps[-1, :], label=f"CN Steady State")
 
-plt.xlim((min_pos, max_pos))
-plt.ylim((min_temp, max_temp))
+plt.xlim((0, 0.1))
+plt.ylim((0, 250))
 plt.xlabel("Radial Position [m]")
 plt.ylabel("Temperature [K]")
-plt.legend(bbox_to_anchor=(1, 1), title="Time [s]")
+plt.legend()
 
 plt.show()
