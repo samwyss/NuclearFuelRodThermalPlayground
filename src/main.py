@@ -77,7 +77,7 @@ def main():
         coolant_temp = float(cooltemp.get()); """[K] temperature of coolant as T_infty"""
         bulk_material_temp = float(matbul.get()); """[K] initial bulk material temperature"""
         core_heat_generation = float(fuelvol.get()); """[W/m^3] volumetric heat generation rate of core"""
-        num_saved_time_steps = float(saved.get()); """[] number of saved time steps"""
+        num_saved_time_steps = int(saved.get()); """[] number of saved time steps"""
         end_time = float(endtim.get()); """[s] end time of simulation"""
         print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
                   bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
