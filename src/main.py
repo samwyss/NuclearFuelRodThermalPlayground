@@ -33,20 +33,20 @@ def main():
     label_7 = Label(root, text="Total Simulation Time [s]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
 
     # defines a string variable for each input, used later to convert from string to text to float
-    fuelthick = StringVar()
-    cooltemp = StringVar()
-    matbul = StringVar()
-    fuelvol = StringVar()
+    fuel_thick = StringVar()
+    cool_temp = StringVar()
+    mat_bul = StringVar()
+    fuel_vol = StringVar()
     saved = StringVar()
-    endtim = StringVar()
+    end_tim = StringVar()
 
     # creates an entry widget for each input and sets the input equal to a text variable
-    entry_1 = Entry(root, textvariable=fuelthick)
-    entry_3 = Entry(root, textvariable=cooltemp)
-    entry_4 = Entry(root, textvariable=matbul)
-    entry_5 = Entry(root, textvariable=fuelvol)
+    entry_1 = Entry(root, textvariable=fuel_thick)
+    entry_3 = Entry(root, textvariable=cool_temp)
+    entry_4 = Entry(root, textvariable=mat_bul)
+    entry_5 = Entry(root, textvariable=fuel_vol)
     entry_6 = Entry(root, textvariable=saved)
-    entry_7 = Entry(root, textvariable=endtim)
+    entry_7 = Entry(root, textvariable=end_tim)
 
     # places each input label
     label_1.grid(row=4, sticky=E)
@@ -73,18 +73,18 @@ def main():
     # function gets each input and converts into a float for simulation purposes, ONLY REQUIREMENT: there must be an input for each variable
     def start_sim():
         print("\nSimulation is running.")
-        fuel_thickness = float(fuelthick.get()); """[m] thickness of fuel"""
-        coolant_temp = float(cooltemp.get()); """[K] temperature of coolant as T_infty"""
-        bulk_material_temp = float(matbul.get()); """[K] initial bulk material temperature"""
-        core_heat_generation = float(fuelvol.get()); """[W/m^3] volumetric heat generation rate of core"""
+        fuel_thickness = float(fuel_thick.get()); """[m] thickness of fuel"""
+        coolant_temp = float(cool_temp.get()); """[K] temperature of coolant as T_infty"""
+        bulk_material_temp = float(mat_bul.get()); """[K] initial bulk material temperature"""
+        core_heat_generation = float(fuel_vol.get()); """[W/m^3] volumetric heat generation rate of core"""
         num_saved_time_steps = int(saved.get()); """[] number of saved time steps"""
-        end_time = float(endtim.get()); """[s] end time of simulation"""
+        end_time = float(end_tim.get()); """[s] end time of simulation"""
         print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
                   bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
         # remove old files
         if path.exists("./out"):
-            print("removing old output files")
+            print("\nRemoving old output files\n")
             rmtree("./out")
 
         # make new folder for output files
