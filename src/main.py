@@ -6,14 +6,15 @@ from src.Model import Model
 from tkinter import *
 
 
-def main():
+# GUI starts, initializes inputs, and calls Model when "Run" is pressed -------------------------------------------------------------
+def gui():
     """main driver function for ThermalPlayground"""
 
     # creating basic frame, background, and layout
     root = Tk()
     root.geometry("1000x600")
 
-    # creates the frame's title and attempts to center it
+    # creates the frame's title and centers it
     title = Label(root, text="Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg="white",
                   fg="#7e57c2", font=('Helvetica', 18))
     reminder = Label(root, text="Please ensure that each input has an associated value. Do not leave any blank boxes.",
@@ -64,13 +65,13 @@ def main():
     entry_7.grid(row=14, column=2)
 
     # creating the function that closes the window
-    def exitwindow():
+    def exit_window():
         print("\nWindow is being closed.")
         root.destroy()
         return
 
     # function gets each input and converts into a float for simulation purposes, ONLY REQUIREMENT: there must be an input for each variable
-    def startsim():
+    def start_sim():
         print("\nSimulation is running.")
         fuel_thickness = float(fuelthick.get()); """[m] thickness of fuel"""
         coolant_temp = float(cooltemp.get()); """[K] temperature of coolant as T_infty"""
@@ -84,41 +85,39 @@ def main():
             print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
                   bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
+            # remove old files
+            if path.exists("./out"):
+                print("removing old output files")
+                rmtree("./out")
+
+            # make new folder for output files
+            mkdir("./out")
+
+            config = Config(
+                fuel_thickness,
+                bulk_material_temp,
+                coolant_temp,
+                core_heat_generation,
+                num_saved_time_steps,
+                end_time,
+            )
+
+            # construct model
+            model: Model = Model(config)
+
+            # run model here
+            model.run()
         return
 
     # creates our buttons, binds functions to them, and places them in the window
-    button_1 = Button(root, text="Exit", command=exitwindow, activebackground='#dfc5fe')
-    button_2 = Button(root, text="Run", command=startsim, activebackground='#dfc5fe')
+    button_1 = Button(root, text="Exit", command=exit_window, activebackground='#dfc5fe')
+    button_2 = Button(root, text="Run", command=start_sim, activebackground='#dfc5fe')
     button_1.grid(row=20, column=1)
     button_2.grid(row=20, column=2)
 
     root.mainloop()
+    return
 
-    # when "run" button or something is clicked run this code ----------------------------------------------------------
-
-    # remove old files
-    if path.exists("./out"):
-        print("removing old output files")
-        rmtree("./out")
-
-    # make new folder for output files
-    mkdir("./out")
-
-
-    config = Config(
-        fuel_thickness,
-        bulk_material_temp,
-        coolant_temp,
-        core_heat_generation,
-        num_saved_time_steps,
-        end_time,
-    )
-
-    # construct model
-    model: Model = Model(config)
-
-    # run model here
-    model.run()
     # ------------------------------------------------------------------------------------------------------------------
 
     # when post processing button is clicked run this code -------------------------------------------------------------
