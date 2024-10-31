@@ -31,12 +31,12 @@ def main():
     """[m] thickness of cladding"""
 
     bulk_material_temp: float = (
-        300.0  # todo this is temporary and needs to be attached to GUI
+        0.0  # todo this is temporary and needs to be attached to GUI
     )
     """[K] initial bulk material temperature"""
 
     coolant_temp: float = (
-        300.0  # todo this is temporary and needs to be attached to GUI
+        0.0  # todo this is temporary and needs to be attached to GUI
     )
     """[K] temperature of coolant as T_infty"""
 
