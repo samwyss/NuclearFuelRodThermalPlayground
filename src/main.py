@@ -17,7 +17,7 @@ def main():
     # creates the frame's title and centers it
     title = Label(root, text="Pseudo 3D Heat Generation Simulation for Nuclear Fuel", bg="white",
                   fg="#7e57c2", font=('Helvetica', 18))
-    reminder = Label(root, text="Please ensure that each input has an associated value. Do not leave any blank boxes.",
+    reminder = Label(root, text="Please ensure that each input has an associated value. Do not leave any blank boxes. No negative values are allowed.",
                      bg="white", fg="red", font=('Helvetica', 10))
     title.grid(row=0, column=0)
     reminder.grid(row=1, column=0)
@@ -79,34 +79,31 @@ def main():
         core_heat_generation = float(fuelvol.get()); """[W/m^3] volumetric heat generation rate of core"""
         num_saved_time_steps = float(saved.get()); """[] number of saved time steps"""
         end_time = float(endtim.get()); """[s] end time of simulation"""
-        if fuel_thickness or coolant_temp or bulk_material_temp or core_heat_generation or num_saved_time_steps or end_time < 0:
-            print("\nMake sure all input values are postive.")
-        else:
-            print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
+        print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
                   bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
-            # remove old files
-            if path.exists("./out"):
-                print("removing old output files")
-                rmtree("./out")
+        # remove old files
+        if path.exists("./out"):
+            print("removing old output files")
+            rmtree("./out")
 
-            # make new folder for output files
-            mkdir("./out")
+        # make new folder for output files
+        mkdir("./out")
 
-            config = Config(
-                fuel_thickness,
-                bulk_material_temp,
-                coolant_temp,
-                core_heat_generation,
-                num_saved_time_steps,
-                end_time,
-            )
+        config = Config(
+            fuel_thickness,
+            bulk_material_temp,
+            coolant_temp,
+            core_heat_generation,
+            num_saved_time_steps,
+            end_time,
+        )
 
-            # construct model
-            model: Model = Model(config)
+        # construct model
+        model: Model = Model(config)
 
-            # run model here
-            model.run()
+        # run model here
+        model.run()
         return
 
     # creates our buttons, binds functions to them, and places them in the window

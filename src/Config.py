@@ -11,7 +11,6 @@ class Config:
     def __init__(
         self,
         fuel_thickness: float,
-        cladding_thickness: float,
         bulk_material_temp: float,
         coolant_temp: float,
         core_heat_generation: float,
@@ -21,7 +20,6 @@ class Config:
         """
         Config constructor
         :param fuel_thickness: [m] fuel thickness
-        :param cladding_thickness: [m] cladding thickness
         :param bulk_material_temp: [K] bulk material temperature
         :param coolant_temp: [K] coolant temperature
         :param core_heat_generation: [W/m^3] core heat generation
@@ -30,9 +28,6 @@ class Config:
         """
         self.__fuel_thickness: float = fuel_thickness
         """[m] fuel thickness"""
-
-        self.__cladding_thickness: float = cladding_thickness
-        """[m] cladding thickness"""
 
         self.__bulk_material_temp: float = bulk_material_temp
         """[K] bulk material temperature"""
@@ -59,13 +54,6 @@ class Config:
         :return: fuel thickness
         """
         return self.__fuel_thickness
-
-    def get_cladding_thickness(self) -> float:
-        """
-        cladding thickness getter
-        :return: cladding thickness
-        """
-        return self.__cladding_thickness
 
     def get_bulk_material_temp(self) -> float:
         """
