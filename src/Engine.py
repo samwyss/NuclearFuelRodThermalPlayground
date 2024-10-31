@@ -67,15 +67,9 @@ class Engine:
         """[] heat transfer coefficient of cladding at outer edge"""
 
         # left boundary conditions (reflective)
-        self.__A[0, 0] = 1.0 / d_time + self.__alpha[0] / (2.0 * self.__delta_r**2)
-        self.__A[0, 1] = -self.__alpha[0] / (2.0 * self.__delta_r**2)
-        self.__b[0] = (
-            1.0 / d_time - self.__alpha[0] / (2.0 * self.__delta_r**2)
-        ) * self.__temperature[0] + (
-            self.__alpha[0] / (2.0 * self.__delta_r**2)
-        ) * self.__temperature[
-            1
-        ]
+        self.__A[0, 0] = (1 / d_time + self.__alpha[0] / self.__delta_r ** 2)
+        self.__A[0, 1] = -(self.__alpha[0] / self.__delta_r ** 2)
+        self.__b[0] = (1 / d_time - self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[0] + (self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[1]
 
         # right boundary conditions (convective robbin BC)
         a1 = 1.0 / d_time + self.__alpha[-1] / self.__delta_r**2
@@ -163,13 +157,7 @@ class Engine:
 
 
         # reflective bc
-        self.__b[0] = (
-            1.0 / d_time - self.__alpha[0] / (2.0 * self.__delta_r**2)
-        ) * self.__temperature[0] + (
-            self.__alpha[0] / (2.0 * self.__delta_r**2)
-        ) * self.__temperature[
-            1
-        ]
+        self.__b[0] = (1 / d_time - self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[0] + (self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[1]
 
         # add source to b
         self.__b += self.__alpha * self.__volume_source / self.__cond
