@@ -125,6 +125,14 @@ class Engine:
     def __assemble_system(self, d_time: float) -> None:
         """reassembles matrices based on new material properties"""
 
+        # update geometric constants
+        self.__c1 = (1 / d_time + self.__alpha / self.__delta_r ** 2)
+        self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
+        self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
+        self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
+        self.__c5 = (self.__alpha / self.__cond)
+        self.__c6 = (2.0 * self.__delta_r * self.__h_clad / self.__cond)
+
         # left boundary conditions (reflective)
         self.__A[0, 0] = (1 / d_time + self.__alpha[0] / self.__delta_r ** 2)
         self.__A[0, 1] = -(self.__alpha[0] / self.__delta_r ** 2)
