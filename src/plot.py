@@ -12,7 +12,7 @@ max_pos = np.max(pos)
 plt.rcParams["figure.dpi"] = 300
 
 r = np.linspace(0, 0.1, 1000)
-plt.plot(r, (1e6*(0.2**2 - r**2)) / (4 * 10), label="Theoretical Steady State")
+plt.plot(r, (1e6*(0.1**2 - r**2)) / (4 * 10), label="Theoretical Steady State")
 plt.plot(pos, temps[-1, :], label=f"CN Steady State")
 
 plt.xlim((0, 0.1))
