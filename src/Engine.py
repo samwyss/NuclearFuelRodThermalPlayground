@@ -66,6 +66,13 @@ class Engine:
         self.__h_infty = 100.0  # todo fill me in correctly
         """[] heat transfer coefficient of cladding at outer edge"""
 
+        self.__c1 = (1 / d_time + self.__alpha / self.__delta_r ** 2)
+        self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
+        self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
+        self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
+        self.__c5 = (self.__alpha / self.__cond)
+        self.__c6 = (2.0 * self.__delta_r * self.__h_infty / self.__cond)
+
         # left boundary conditions (reflective)
         self.__A[0, 0] = (1 / d_time + self.__alpha[0] / self.__delta_r ** 2)
         self.__A[0, 1] = -(self.__alpha[0] / self.__delta_r ** 2)
@@ -79,15 +86,15 @@ class Engine:
         for i in range(1, self.__num_points - 1):
 
             # A matrix
-            self.__A[i, i] = 1.0 / d_time + self.__alpha[i] / self.__delta_r**2
-            self.__A[i, i + 1] = -(self.__alpha[i] / (2.0 * self.__delta_r**2) + self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r))
-            self.__A[i, i - 1] = -(self.__alpha[i] / (2.0 * self.__delta_r**2) - self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r))
+            self.__A[i, i] = self.__c1[i]
+            self.__A[i, i + 1] = -self.__c3[i]
+            self.__A[i, i - 1] = -self.__c4[i]
 
             # B matrix
             self.__b[i] = (
-                (1.0 / d_time - self.__alpha[i] / self.__delta_r**2) * self.__temperature[i]
-                + (self.__alpha[i] / (2.0 * self.__delta_r**2) + self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i + 1]
-                + (self.__alpha[i] / (2.0 * self.__delta_r**2) - self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i - 1]
+                self.__c2[i] * self.__temperature[i]
+                + self.__c3[i] * self.__temperature[i + 1]
+                + self.__c4[i]* self.__temperature[i - 1]
             )
 
     def __repr__(self) -> dict[str, Any]:
@@ -113,9 +120,9 @@ class Engine:
         # bulk material
         for i in range(1, self.__num_points - 1):
             self.__b[i] = (
-                (1.0 / d_time - self.__alpha[i] / self.__delta_r**2) * self.__temperature[i]
-                + (self.__alpha[i] / (2.0 * self.__delta_r**2) + self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i + 1]
-                + (self.__alpha[i] / (2.0 * self.__delta_r**2) - self.__alpha[i] / (4.0 * self.__pos[i] * self.__delta_r)) * self.__temperature[i - 1]
+                self.__c2[i]* self.__temperature[i]
+                + self.__c3[i] * self.__temperature[i + 1]
+                + self.__c4[i] * self.__temperature[i - 1]
             )
 
         # robbin bc
@@ -125,7 +132,7 @@ class Engine:
         self.__b[0] = (1 / d_time - self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[0] + (self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[1]
 
         # add source to b
-        self.__b += self.__alpha * self.__volume_source / self.__cond
+        self.__b += self.__volume_source * self.__c5
 
         # update temperature
         self.__temperature = solve(self.__A, self.__b)
