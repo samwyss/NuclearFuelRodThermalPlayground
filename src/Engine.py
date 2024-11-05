@@ -97,7 +97,7 @@ class Engine:
 
         # todo update material properties
 
-        # reassemble system
+        # reassemble system with updated properties
         self.__assemble_system(d_time)
 
         # add source to b
