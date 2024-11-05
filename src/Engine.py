@@ -60,7 +60,7 @@ class Engine:
         self.__b = zeros(self.__num_points)
         """[] B vector in linear system"""
 
-        self.__temp_infty = config.get_coolant_temp()
+        self.__temp_infty = 0.0
         """[K] reference temperature of coolant"""
 
         self.__h_infty = 100.0  # todo fill me in correctly
@@ -79,8 +79,11 @@ class Engine:
         self.__b[0] = (1 / d_time - self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[0] + (self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[1]
 
         # right boundary conditions (convective robbin BC)
-        self.__A[-1,-1] = 1.0
-        self.__b[-1] = 0.0
+        self.__A[-1,-1] = (self.__c1[-1] + self.__c3[-1] * self.__c6[-1])
+        self.__A[-1,-2] = -(self.__c4[-1] + self.__c3[-1])
+        self.__b[-1] = ((self.__c2[-1] - self.__c3[-1] * self.__c6[-1]) * self.__temperature[-1]
+                        + (self.__c4[-1] + self.__c3[-1]) * self.__temperature[-2]
+                        + 2.0 * self.__c3[-1] * self.__c6[-1] * self.__temp_infty)
 
         # interior nodes
         for i in range(1, self.__num_points - 1):
@@ -126,7 +129,9 @@ class Engine:
             )
 
         # robbin bc
-        self.__b[-1] = 0.0
+        self.__b[-1] = ((self.__c2[-1] - self.__c3[-1] * self.__c6[-1]) * self.__temperature[-1]
+                        + (self.__c4[-1] + self.__c3[-1]) * self.__temperature[-2]
+                        + 2.0 * self.__c3[-1] * self.__c6[-1] * self.__temp_infty)
 
         # reflective bc
         self.__b[0] = (1 / d_time - self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[0] + (self.__alpha[0] / self.__delta_r ** 2) * self.__temperature[1]
