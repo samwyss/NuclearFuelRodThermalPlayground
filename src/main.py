@@ -24,8 +24,7 @@ def main():
 
     # creates labels for each input
     label_1 = Label(root, text="Fuel Thickness [m]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
-    label_3 = Label(root, text="Coolant Temperature [K]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
-    label_4 = Label(root, text="Initial Material Bulk Temperature [K]", bg="white", fg="#7e57c2",
+    label_4 = Label(root, text="Initial Cladding Temperature [K]", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
     label_5 = Label(root, text="Fuel Volumetric Heat Generation [W/m\u00b3]", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
@@ -34,7 +33,6 @@ def main():
 
     # defines a string variable for each input, used later to convert from string to text to float
     fuel_thick = StringVar()
-    cool_temp = StringVar()
     mat_bul = StringVar()
     fuel_vol = StringVar()
     saved = StringVar()
@@ -42,23 +40,20 @@ def main():
 
     # creates an entry widget for each input and sets the input equal to a text variable
     entry_1 = Entry(root, textvariable=fuel_thick)
-    entry_3 = Entry(root, textvariable=cool_temp)
     entry_4 = Entry(root, textvariable=mat_bul)
     entry_5 = Entry(root, textvariable=fuel_vol)
     entry_6 = Entry(root, textvariable=saved)
     entry_7 = Entry(root, textvariable=end_tim)
 
     # places each input label
-    label_1.grid(row=4, sticky=E)
-    label_3.grid(row=6, sticky=E)
+    label_1.grid(row=6, sticky=E)
     label_4.grid(row=8, sticky=E)
     label_5.grid(row=10, sticky=E)
     label_6.grid(row=12, sticky=E)
     label_7.grid(row=14, sticky=E)
 
     # places each input text box
-    entry_1.grid(row=4, column=2)
-    entry_3.grid(row=6, column=2)
+    entry_1.grid(row=6, column=2)
     entry_4.grid(row=8, column=2)
     entry_5.grid(row=10, column=2)
     entry_6.grid(row=12, column=2)
@@ -74,13 +69,11 @@ def main():
     def start_sim():
         print("\nSimulation is running.")
         fuel_thickness = float(fuel_thick.get()); """[m] thickness of fuel"""
-        coolant_temp = float(cool_temp.get()); """[K] temperature of coolant as T_infty"""
-        bulk_material_temp = float(mat_bul.get()); """[K] initial bulk material temperature"""
+        bulk_material_temp = float(mat_bul.get()); """[K] initial cladding temperature"""
         core_heat_generation = float(fuel_vol.get()); """[W/m^3] volumetric heat generation rate of core"""
         num_saved_time_steps = int(saved.get()); """[] number of saved time steps"""
         end_time = float(end_tim.get()); """[s] end time of simulation"""
-        print("\nAll saved entries are as follows: ", fuel_thickness,coolant_temp,
-                  bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
+        print("\nAll saved entries are as follows: ", fuel_thickness, bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
         # remove old files
         if path.exists("./out"):
@@ -93,7 +86,6 @@ def main():
         config = Config(
             fuel_thickness,
             bulk_material_temp,
-            coolant_temp,
             core_heat_generation,
             num_saved_time_steps,
             end_time,
