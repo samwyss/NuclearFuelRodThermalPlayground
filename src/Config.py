@@ -12,7 +12,6 @@ class Config:
         self,
         fuel_thickness: float,
         bulk_material_temp: float,
-        coolant_temp: float,
         core_heat_generation: float,
         num_saved_time_steps: int,
         end_time: float,
@@ -21,7 +20,6 @@ class Config:
         Config constructor
         :param fuel_thickness: [m] fuel thickness
         :param bulk_material_temp: [K] bulk material temperature
-        :param coolant_temp: [K] coolant temperature
         :param core_heat_generation: [W/m^3] core heat generation
         :param num_saved_time_steps: [] number of saved time steps
         :param end_time: end time of simulation
@@ -31,9 +29,6 @@ class Config:
 
         self.__bulk_material_temp: float = bulk_material_temp
         """[K] bulk material temperature"""
-
-        self.__coolant_temp: float = coolant_temp
-        """[K] coolant temperature"""
 
         self.__core_heat_generation: float = core_heat_generation
         """[W/m^3] core heat generation"""
@@ -61,13 +56,6 @@ class Config:
         :return: bulk material temperature
         """
         return self.__bulk_material_temp
-
-    def get_coolant_temp(self) -> float:
-        """
-        coolant temperature getter
-        :return: coolant temperature
-        """
-        return self.__coolant_temp
 
     def get_core_heat_generation(self) -> float:
         """
