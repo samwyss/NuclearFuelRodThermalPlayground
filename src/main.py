@@ -1,6 +1,16 @@
 from os import mkdir, path
 from shutil import rmtree
 
+from PIL import Image, ImageTk  # Add this import for handling image conversion
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+import numpy as np
+import csv
+import cv2
+import os
+import tkinter as tk
+
 from src.Config import Config
 from src.Model import Model
 from tkinter import *
@@ -110,7 +120,223 @@ def main():
     # ------------------------------------------------------------------------------------------------------------------
 
     # when post processing button is clicked run this code -------------------------------------------------------------
-    # todo post processing
+    # Process Final Temp Distribution
+    file3 = open("out/time.csv", "r")
+    timesteps = list(csv.reader(file3, delimiter=","))
+
+    file2 = open("out/temperature.csv", "r")
+    temperatures = list(csv.reader(file2, delimiter=","))
+
+    # Process the length of the fuel rod
+    file = open("out/position.csv", "r")
+    position = list(csv.reader(file, delimiter=","))
+
+    def postprocessing():
+        # Function to generate the plot and save it as an image
+        def generate_temperature_gradient(temps, min_temp, max_temp, timestep):
+            # Normalize the temperature values between 0 and 1
+            norm = plt.Normalize(min_temp, max_temp)
+
+            # Create a color map from blue (cold) to red (hot) using the updated method
+            cmap = plt.colormaps['coolwarm']  # Updated from get_cmap()
+
+            # Normalize temperatures to the range [0, 1] and map to colors
+            colors = cmap(norm(temps))
+
+            # Plot the row of colors for the given timestep
+            fig, ax = plt.subplots(figsize=(len(temps), 2))
+
+            # Create a horizontal line of color blocks
+            ax.imshow([colors], aspect='auto',
+                      extent=(1.0, float(len(temps)), 0.0, 1.0))  # Convert list to tuple of floats
+
+            # Set labels
+            ax.set_xticks(np.arange(1, len(temps) + 1))
+            ax.set_yticks([])
+            ax.set_xlabel('Location index')
+            ax.set_title(f'Temperature Gradient at Timestep {timestep}')
+
+            # Show color bar for reference
+            cbar = plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)
+            cbar.set_label('Temperature')
+
+            # Save the figure
+            plt.savefig(f'./out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
+            plt.show()
+
+        maxPosition = float(max(position[0]))
+        minPosition = float(min(position[0]))
+        maxTemperature = float(max(temperatures[-1]))
+        minTemperature = float(min(temperatures[0]))
+        j = 0
+
+        for i in timesteps:
+            rounded_timestep = round(float(i[0]))  # Round the timestep to the nearest integer
+            tempTemps = list(map(float, temperatures[j]))  # Convert temperature values to floats
+            generate_temperature_gradient(tempTemps, minTemperature, maxTemperature, rounded_timestep)
+            j += 1
+
+        def create_video_from_images(image_folder, video_name, fps=1):
+            # Get a list of image filenames in the specified folder
+            images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+
+            # Sort images by timestep, assuming filename is 'temperature_gradient_timestep_{timestep}.png'
+            images.sort(key=lambda x: int(x.split('_')[-1].split('.')[0]))
+
+            # Read the first image to get the frame size (height, width)
+            frame = cv2.imread(os.path.join(image_folder, images[0]))
+            height, width, layers = frame.shape
+
+            # Define the codec and create a VideoWriter object to save the video
+            video = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
+
+            # Iterate through the sorted images and write each one to the video
+            for image in images:
+                img_path = os.path.join(image_folder, image)
+                frame = cv2.imread(img_path)
+                video.write(frame)  # Add frame to video
+
+            # Release the VideoWriter object
+            video.release()
+            print(f"Video saved as {video_name}")
+
+        # Example usage
+        image_folder = './out'  # Folder where images are saved
+        video_name = 'temperature_gradient_video.mp4'  # Name of the output video
+        fps = 2  # Frames per second (change as needed)
+
+        create_video_from_images(image_folder, video_name, fps)
+
+        def play_video_in_new_window(video_path, root, fps=2, scale_factor=0.5):
+            # Create a new window for the video
+            video_window = tk.Toplevel(root)
+            video_window.title("Temperature Gradient Video")
+
+            # Capture the video using OpenCV
+            cap = cv2.VideoCapture(video_path)
+
+            def update_frame():
+                nonlocal cap
+                # Read a frame from the video
+                ret, frame = cap.read()
+                if not ret:  # If the video ends, restart it
+                    cap.release()
+                    cap = cv2.VideoCapture(video_path)
+                    ret, frame = cap.read()
+
+                if ret:
+                    # Get the original dimensions of the frame
+                    height, width, _ = frame.shape
+
+                    # Calculate the new height to maintain aspect ratio
+                    new_width = int(width * scale_factor)
+                    new_height = int(height * scale_factor)
+
+                    # Resize the frame to the new dimensions
+                    resized_frame = cv2.resize(frame, (new_width, new_height))
+
+                    # Convert the frame from BGR (OpenCV format) to RGB
+                    resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
+
+                    # Convert the frame to a PIL Image
+                    img = Image.fromarray(resized_frame)
+
+                    # Convert the PIL Image to an ImageTk format for Tkinter
+                    imgtk = ImageTk.PhotoImage(image=img)
+
+                    # Update the Label widget with the new frame
+                    video_label.imgtk = imgtk
+                    video_label.configure(image=imgtk)
+
+                    # Schedule the next frame update (FPS)
+                    video_label.after(1000 // fps, update_frame)
+                else:
+                    cap.release()  # Release the video when done
+
+            # Create a Label to display the video in the new window
+            video_label = tk.Label(video_window)
+            video_label.pack()  # Pack it to fill the new window
+
+            # Start the video playback
+            update_frame()
+
+            # Set the new window size based on the video size (optional)
+            video_window.geometry(f"{int(800 * scale_factor)}x{int(600 * scale_factor)}")  # Adjust as needed
+
+        def generate_chart():
+
+            # Example data: temperature distribution
+            distance = np.linspace(minPosition, maxPosition, len(position[0]))
+            temperature = list(map(float, temperatures[-1]))
+
+            fig = Figure(figsize=(5, 4), dpi=100)
+            ax = fig.add_subplot(111)
+            ax.plot(distance, temperature)
+            ax.set_xlabel('Distance (m)')
+            ax.set_ylabel('Temperature (C)')
+            ax.set_title('Temperature Distribution')
+
+            return fig
+
+        # Function to update the displayed values
+        def update_values(center_temp, bulk_fuel_temp, bulk_clad_temp, avg_coolant_temp):
+            center_line_temp.set(f"{center_temp:.2f} °C")
+            bulk_fuel_temp_var.set(f"{bulk_fuel_temp:.2f} °C")
+            bulk_clad_temp_var.set(f"{bulk_clad_temp:.2f} °C")
+            avg_coolant_temp_var.set(f"{avg_coolant_temp:.2f} °C")
+
+        # Create the main window
+        root = tk.Tk()
+        root.title("Final Solution")
+
+        # Create a frame for the input values on the left
+        input_frame = tk.Frame(root)
+        input_frame.pack(side=tk.LEFT, padx=20, pady=20)
+
+        # Add header label
+        header_label = Label(root, text="Steady State Highlights", font=("Arial", 16))
+        header_label.pack(pady=10)
+
+        # Create StringVars to hold the values for display
+        center_line_temp = StringVar()
+        bulk_fuel_temp_var = StringVar()
+        bulk_clad_temp_var = StringVar()
+        avg_coolant_temp_var = StringVar()
+
+        # Add labels and value fields for the four data points
+        Label(input_frame, text="Center Line Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, textvariable=center_line_temp, font=("Arial", 12)).pack(anchor="w", pady=5)
+
+        Label(input_frame, text="Bulk Fuel Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, textvariable=bulk_fuel_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
+
+        Label(input_frame, text="Bulk Clad Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, textvariable=bulk_clad_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
+
+        Label(input_frame, text="Average Coolant Temp dr from Clad (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, textvariable=avg_coolant_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
+
+        # Generate the temperature distribution chart
+        fig = generate_chart()
+
+        # Create a canvas to embed the chart into tkinter
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.RIGHT, padx=20, pady=20)
+
+        averageBulkFuelTemp = sum(list(map(float, temperatures[-1]))) / len(temperatures[-1])
+        # Example of how to update the values dynamically
+        # These values would come from your data source
+        update_values(max(list(map(float, temperatures[-1]))), averageBulkFuelTemp, 800, 50)
+
+        # Call the function with a scale factor of 0.5 to reduce the video size to 50%
+        play_video_in_new_window('temperature_gradient_video.mp4', root, fps=2, scale_factor=0.5)
+
+        # Start the Tkinter main loop
+        root.mainloop()
+
+    postprocessing()
+
     # ------------------------------------------------------------------------------------------------------------------
 
 
