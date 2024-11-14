@@ -2,58 +2,52 @@ from tkinter import *
 
 #creating basic frame, background, and layout
 root = Tk()
-root.geometry("1000x600")
+    root.geometry("1000x600")
 
-#creates the frame's title and attempts to center it
-title = Label(root, text = "Pseudo 3D Heat Generation Simulation Between Nuclear Fuel and Cladding", bg = "white", fg = "#7e57c2", font = ('Helvetica', 18))
-reminder = Label(root, text = "Please ensure that each input has an associated value. Do not leave any blank boxes.", bg = "white", fg = "red", font = ('Helvetica', 10))
-title.grid(row = 0, column = 0)
-reminder.grid(row = 1, column = 0)
+    # creates the frame's title and centers it
+    title = Label(root, text="Pseudo 3D Heat Generation Simulation for Nuclear Fuel", bg="white",
+                  fg="#7e57c2", font=('Helvetica', 18))
+    reminder = Label(root, text="Please ensure that each input has an associated value. Do not leave any blank boxes. No negative values are allowed.",
+                     bg="white", fg="red", font=('Helvetica', 10))
+    title.grid(row=0, column=0)
+    reminder.grid(row=1, column=0)
 
-#creates labels for each input
-label_1 = Label(root, text = "Fuel Thickness [m]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_2 = Label(root, text = "Cladding Thickness [m]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_3 = Label(root, text = "Coolant Temperature [K]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_4 = Label(root, text = "Initial Material Bulk Temperature [K]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_5 = Label(root, text = "Fuel Volumetric Heat Generation [W/m\u00b3]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_6 = Label(root, text = "Number of Saved Time Steps", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
-label_7 = Label(root, text = "Total Simulation Time [s]", bg = "white", fg = "#7e57c2", font = ('Helvetica', 15))
+    # creates labels for each input
+    label_1 = Label(root, text="Fuel Thickness [m]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_4 = Label(root, text="Initial Cladding Temperature [K]", bg="white", fg="#7e57c2",
+                    font=('Helvetica', 15))
+    label_5 = Label(root, text="Fuel Volumetric Heat Generation [W/m\u00b3]", bg="white", fg="#7e57c2",
+                    font=('Helvetica', 15))
+    label_6 = Label(root, text="Number of Saved Time Steps", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_7 = Label(root, text="Total Simulation Time [s]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
 
-#defines a string variable for each input, used later to convert from string to text to float
-fuelthick = StringVar()
-cladthick = StringVar()
-cooltemp = StringVar()
-matbul = StringVar()
-fuelvol = StringVar()
-saved = StringVar()
-endtim = StringVar()
+    # defines a string variable for each input, used later to convert from string to text to float
+    fuel_thick = StringVar()
+    mat_bul = StringVar()
+    fuel_vol = StringVar()
+    saved = StringVar()
+    end_tim = StringVar()
 
-#creates an entry widget for each input and sets the input equal to a text variable
-entry_1 = Entry(root, textvariable = fuelthick)
-entry_2 = Entry(root, textvariable = cladthick)
-entry_3 = Entry(root, textvariable = cooltemp)
-entry_4 = Entry(root, textvariable = matbul)
-entry_5 = Entry(root, textvariable = fuelvol)
-entry_6 = Entry(root, textvariable = saved)
-entry_7 = Entry(root, textvariable = endtim)
+    # creates an entry widget for each input and sets the input equal to a text variable
+    entry_1 = Entry(root, textvariable=fuel_thick)
+    entry_4 = Entry(root, textvariable=mat_bul)
+    entry_5 = Entry(root, textvariable=fuel_vol)
+    entry_6 = Entry(root, textvariable=saved)
+    entry_7 = Entry(root, textvariable=end_tim)
 
-#places each input label
-label_1.grid(row = 4, sticky = E)
-label_2.grid(row = 6, sticky = E)
-label_3.grid(row = 8, sticky = E)
-label_4.grid(row = 10, sticky = E)
-label_5.grid(row = 12, sticky = E)
-label_6.grid(row = 14, sticky = E)
-label_7.grid(row = 16, sticky = E)
+    # places each input label
+    label_1.grid(row=6, sticky=E)
+    label_4.grid(row=8, sticky=E)
+    label_5.grid(row=10, sticky=E)
+    label_6.grid(row=12, sticky=E)
+    label_7.grid(row=14, sticky=E)
 
-#places each input text box
-entry_1.grid(row = 4, column = 2)
-entry_2.grid(row = 6, column = 2)
-entry_3.grid(row = 8, column = 2)
-entry_4.grid(row = 10, column = 2)
-entry_5.grid(row = 12, column = 2)
-entry_6.grid(row = 14, column = 2)
-entry_7.grid(row = 16,column = 2)
+    # places each input text box
+    entry_1.grid(row=6, column=2)
+    entry_4.grid(row=8, column=2)
+    entry_5.grid(row=10, column=2)
+    entry_6.grid(row=12, column=2)
+    entry_7.grid(row=14, column=2)
 
 #creating the function that closes the window
 def exitwindow():
