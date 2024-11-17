@@ -10,7 +10,7 @@ import csv
 import cv2
 import os
 import tkinter as tk
-
+import PIL
 from src.Config import Config
 from src.Model import Model
 from tkinter import *
@@ -115,7 +115,6 @@ def main():
     button_2.grid(row=20, column=2)
 
     root.mainloop()
-    return
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -203,11 +202,11 @@ def main():
         # Example usage
         image_folder = './out'  # Folder where images are saved
         video_name = 'temperature_gradient_video.mp4'  # Name of the output video
-        fps = 2  # Frames per second (change as needed)
+        fps = 4  # Frames per second (change as needed)
 
         create_video_from_images(image_folder, video_name, fps)
 
-        def play_video_in_new_window(video_path, root, fps=2, scale_factor=0.5):
+        def play_video_in_new_window(video_path, root, fps=4, scale_factor=0.5):
             # Create a new window for the video
             video_window = tk.Toplevel(root)
             video_window.title("Temperature Gradient Video")
@@ -239,7 +238,7 @@ def main():
                     resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
 
                     # Convert the frame to a PIL Image
-                    img = Image.fromarray(resized_frame)
+                    img = PIL.Image.fromarray(resized_frame)
 
                     # Convert the PIL Image to an ImageTk format for Tkinter
                     imgtk = ImageTk.PhotoImage(image=img)
@@ -326,16 +325,18 @@ def main():
 
         averageBulkFuelTemp = sum(list(map(float, temperatures[-1]))) / len(temperatures[-1])
         # Example of how to update the values dynamically
+        intmatbul = int(mat_bul.get())
         # These values would come from your data source
-        update_values(max(list(map(float, temperatures[-1]))), averageBulkFuelTemp, 800, 50)
+        update_values(max(list(map(float, temperatures[-1]))), averageBulkFuelTemp, intmatbul, 50)
 
         # Call the function with a scale factor of 0.5 to reduce the video size to 50%
-        play_video_in_new_window('temperature_gradient_video.mp4', root, fps=2, scale_factor=0.5)
+        play_video_in_new_window('temperature_gradient_video.mp4', root, fps=4, scale_factor=0.5)
 
         # Start the Tkinter main loop
         root.mainloop()
 
     postprocessing()
+
 
     # ------------------------------------------------------------------------------------------------------------------
 
