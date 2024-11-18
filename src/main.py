@@ -75,7 +75,7 @@ def main():
         root.destroy()
         return
 
-    # function gets each input and converts into a float for simulation purposes, ONLY REQUIREMENT: there must be an input for each variable
+    # function gets each input and converts into a floats and an int for simulation purposes
     def start_sim():
         print("\nSimulation is running.")
         fuel_thickness = float(fuel_thick.get()); """[m] thickness of fuel"""
@@ -118,7 +118,7 @@ def main():
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    # when post processing button is clicked run this code -------------------------------------------------------------
+    # when post-processing button is clicked run this code -------------------------------------------------------------
     # Process Final Temp Distribution
     file3 = open("out/time.csv", "r")
     timesteps = list(csv.reader(file3, delimiter=","))
