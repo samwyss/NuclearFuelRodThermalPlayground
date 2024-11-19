@@ -271,17 +271,17 @@ def main():
             ax = fig.add_subplot(111)
             ax.plot(distance, temperature)
             ax.set_xlabel('Distance (m)')
-            ax.set_ylabel('Temperature (C)')
+            ax.set_ylabel('Temperature (K)')
             ax.set_title('Temperature Distribution')
 
             return fig
 
         # Function to update the displayed values
         def update_values(center_temp, bulk_fuel_temp, bulk_clad_temp, avg_coolant_temp):
-            center_line_temp.set(f"{center_temp:.2f} °C")
-            bulk_fuel_temp_var.set(f"{bulk_fuel_temp:.2f} °C")
-            bulk_clad_temp_var.set(f"{bulk_clad_temp:.2f} °C")
-            avg_coolant_temp_var.set(f"{avg_coolant_temp:.2f} °C")
+            center_line_temp.set(f"{center_temp:.2f} K")
+            bulk_fuel_temp_var.set(f"{bulk_fuel_temp:.2f} K")
+            bulk_clad_temp_var.set(f"{bulk_clad_temp:.2f} K")
+            avg_coolant_temp_var.set(f"{avg_coolant_temp:.2f} K")
 
         # Create the main window
         root = tk.Tk()
@@ -302,17 +302,17 @@ def main():
         avg_coolant_temp_var = StringVar()
 
         # Add labels and value fields for the four data points
-        Label(input_frame, text="Center Line Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Center Line Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=center_line_temp, font=("Arial", 12)).pack(anchor="w", pady=5)
 
-        Label(input_frame, text="Bulk Fuel Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Bulk Fuel Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=bulk_fuel_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
 
-        Label(input_frame, text="Bulk Clad Temp (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Bulk Clad Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=bulk_clad_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
 
-        Label(input_frame, text="Average Coolant Temp dr from Clad (C):", font=("Arial", 12)).pack(anchor="w", pady=5)
-        Label(input_frame, textvariable=avg_coolant_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
+        #Label(input_frame, text="Average Coolant Temp dr from Clad (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        #Label(input_frame, textvariable=avg_coolant_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
 
         # Generate the temperature distribution chart
         fig = generate_chart()
