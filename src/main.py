@@ -293,7 +293,7 @@ def main():
         input_frame.pack(side=tk.LEFT, padx=20, pady=20)
 
         # Add header label
-        header_label = Label(root, text="Steady State Highlights", font=("Arial", 16))
+        header_label = Label(root, text="Final Temperature Distribution Highlights", font=("Arial", 16))
         header_label.pack(pady=10)
 
         # Create StringVars to hold the values for display
