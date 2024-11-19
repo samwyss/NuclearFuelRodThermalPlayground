@@ -86,12 +86,12 @@ def main():
         print("\nAll saved entries are as follows: ", fuel_thickness, bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
         # remove old files
-        if path.exists("./out"):
+        if path.exists("../out"):
             print("\nRemoving old output files\n")
-            rmtree("./out")
+            rmtree("../out")
 
         # make new folder for output files
-        mkdir("./out")
+        mkdir("../out")
 
         config = Config(
             fuel_thickness,
@@ -120,14 +120,14 @@ def main():
 
     # when post-processing button is clicked run this code -------------------------------------------------------------
     # Process Final Temp Distribution
-    file3 = open("out/time.csv", "r")
+    file3 = open("../out/time.csv", "r")
     timesteps = list(csv.reader(file3, delimiter=","))
 
-    file2 = open("out/temperature.csv", "r")
+    file2 = open("../out/temperature.csv", "r")
     temperatures = list(csv.reader(file2, delimiter=","))
 
     # Process the length of the fuel rod
-    file = open("out/position.csv", "r")
+    file = open("../out/position.csv", "r")
     position = list(csv.reader(file, delimiter=","))
 
     def postprocessing():
@@ -160,7 +160,7 @@ def main():
             cbar.set_label('Temperature')
 
             # Save the figure
-            plt.savefig(f'./out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
+            plt.savefig(f'../out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
             plt.show()
 
         maxPosition = float(max(position[0]))
@@ -200,7 +200,7 @@ def main():
             print(f"Video saved as {video_name}")
 
         # Example usage
-        image_folder = './out'  # Folder where images are saved
+        image_folder = '../out'  # Folder where images are saved
         video_name = 'temperature_gradient_video.mp4'  # Name of the output video
         fps = 4  # Frames per second (change as needed)
 
