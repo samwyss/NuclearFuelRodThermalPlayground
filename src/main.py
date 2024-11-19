@@ -132,7 +132,7 @@ def main():
 
     def postprocessing():
         # Function to generate the plot and save it as an image
-        def generate_temperature_gradient(temps, min_temp, max_temp, timestep):
+        def generate_temperature_gradient(temps, min_temp, max_temp, timestep, position):
             # Normalize the temperature values between 0 and 1
             norm = plt.Normalize(min_temp, max_temp)
 
@@ -150,7 +150,8 @@ def main():
                       extent=(1.0, float(len(temps)), 0.0, 1.0))  # Convert list to tuple of floats
 
             # Set labels
-            ax.set_xticks(np.arange(1, len(temps) + 1))
+            ax.set_xticks(np.arange(1, len(position) + 1))
+            ax.set_xticklabels([f"{pos:.4f}" for pos in position])
             ax.set_yticks([])
             ax.set_xlabel('Location index')
             ax.set_title(f'Temperature Gradient at Timestep {timestep}')
@@ -168,11 +169,11 @@ def main():
         maxTemperature = float(max(temperatures[-1]))
         minTemperature = float(min(temperatures[0]))
         j = 0
-
+        rounded_positions = np.linspace(minPosition, maxPosition, len(position[0]))
         for i in timesteps:
             rounded_timestep = round(float(i[0]))  # Round the timestep to the nearest integer
             tempTemps = list(map(float, temperatures[j]))  # Convert temperature values to floats
-            generate_temperature_gradient(tempTemps, minTemperature, maxTemperature, rounded_timestep)
+            generate_temperature_gradient(tempTemps, minTemperature, maxTemperature, rounded_timestep, rounded_positions)
             j += 1
 
         def create_video_from_images(image_folder, video_name, fps=1):
