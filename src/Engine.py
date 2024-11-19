@@ -1,7 +1,7 @@
 from csv import writer
 from typing import Any
 
-from numpy import full, linspace, zeros
+from numpy import full, linspace, zeros, errstate
 from numpy.linalg import solve
 
 from Config import Config
@@ -67,11 +67,12 @@ class Engine:
         self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
         """[] array geometric constants for all points in the simulation domain"""
 
-        self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
-        """[] array geometric constants for all points in the simulation domain"""
+        with errstate(divide='ignore'):
+            self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
+            """[] array geometric constants for all points in the simulation domain"""
 
-        self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
-        """[] array geometric constants for all points in the simulation domain"""
+            self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
+            """[] array geometric constants for all points in the simulation domain"""
 
         self.__c5 = (self.__alpha / self.__cond)
         """[] array geometric constants for all points in the simulation domain"""
@@ -128,8 +129,9 @@ class Engine:
         # update geometric constants
         self.__c1 = (1 / d_time + self.__alpha / self.__delta_r ** 2)
         self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
-        self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
-        self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
+        with errstate(divide='ignore'):
+            self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
+            self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
         self.__c5 = (self.__alpha / self.__cond)
         self.__c6 = (2.0 * self.__delta_r * self.__h_clad / self.__cond)
 
