@@ -33,13 +33,13 @@ def main():
     reminder.grid(row=1, column=0)
 
     # creates labels for each input
-    label_1 = Label(root, text="Fuel Thickness [m]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
-    label_4 = Label(root, text="Initial Cladding Temperature [K]", bg="white", fg="#7e57c2",
+    label_1 = Label(root, text="Fuel Thickness [m] (Example input: 0.005)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_4 = Label(root, text="Initial Cladding Temperature [K] (Example input: 561)", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
-    label_5 = Label(root, text="Fuel Volumetric Heat Generation [W/m\u00b3]", bg="white", fg="#7e57c2",
+    label_5 = Label(root, text="Fuel Volumetric Heat Generation [W/m\u00b3] (Example input: 428e6)", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
-    label_6 = Label(root, text="Number of Saved Time Steps", bg="white", fg="#7e57c2", font=('Helvetica', 15))
-    label_7 = Label(root, text="Total Simulation Time [s]", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_6 = Label(root, text="Number of Saved Time Steps (Example input: 100)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_7 = Label(root, text="Total Simulation Time [s] (Example input: 3600)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
 
     # defines a string variable for each input, used later to convert from string to text to float
     fuel_thick = StringVar()
@@ -83,7 +83,6 @@ def main():
         core_heat_generation = float(fuel_vol.get()); """[W/m^3] volumetric heat generation rate of core"""
         num_saved_time_steps = int(saved.get()); """[] number of saved time steps"""
         end_time = float(end_tim.get()); """[s] end time of simulation"""
-        print("\nAll saved entries are as follows: ", fuel_thickness, bulk_material_temp, core_heat_generation, num_saved_time_steps, end_time)
 
         # remove old files
         if path.exists("../out"):
@@ -109,7 +108,7 @@ def main():
         return
 
     # creates our buttons, binds functions to them, and places them in the window
-    button_1 = Button(root, text="Exit", command=exit_window, activebackground='#dfc5fe')
+    button_1 = Button(root, text="Process Data", command=exit_window, activebackground='#dfc5fe')
     button_2 = Button(root, text="Run", command=start_sim, activebackground='#dfc5fe')
     button_1.grid(row=20, column=1)
     button_2.grid(row=20, column=2)
