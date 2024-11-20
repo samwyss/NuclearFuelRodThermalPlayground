@@ -4,7 +4,7 @@ from typing import Any
 from numpy import full, linspace, zeros, errstate
 from numpy.linalg import solve
 
-from Config import Config
+from src.Config import Config
 
 
 class Engine:
@@ -30,7 +30,7 @@ class Engine:
         """[m] radial location of all points in mesh"""
 
         # write position
-        with open("../out/position.csv", "a", newline="", encoding="utf-8") as file:
+        with open("./out/position.csv", "a", newline="", encoding="utf-8") as file:
             csv_writer = writer(file)
             csv_writer.writerow(self.__pos)
 
@@ -114,12 +114,12 @@ class Engine:
         """
 
         # log temperature
-        with open("../out/temperature.csv", "a", newline="", encoding="utf-8") as file:
+        with open("./out/temperature.csv", "a", newline="", encoding="utf-8") as file:
             csv_writer = writer(file)
             csv_writer.writerow(self.__temperature)
 
         # log time
-        with open("../out/time.csv", "a", newline="", encoding="utf-8") as file:
+        with open("./out/time.csv", "a", newline="", encoding="utf-8") as file:
             csv_writer = writer(file)
             csv_writer.writerow([self.__current_time])
 

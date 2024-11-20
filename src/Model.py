@@ -55,6 +55,7 @@ class Model:
         # log final time
         self.__engine.log()
         print(f"logged step {self.__num_time_steps} of {self.__num_time_steps}")
+        print("end of simulation: please click `Process Data to visualize outputs`")
 
     def get_d_time(self) -> float:
         """

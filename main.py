@@ -77,7 +77,7 @@ def main():
 
     # function gets each input and converts into a floats and an int for simulation purposes
     def start_sim():
-        print("\nSimulation is running.")
+        print("\nsimulation is running")
         fuel_thickness = float(fuel_thick.get()); """[m] thickness of fuel"""
         bulk_material_temp = float(mat_bul.get()); """[K] initial cladding temperature"""
         core_heat_generation = float(fuel_vol.get()); """[W/m^3] volumetric heat generation rate of core"""
@@ -85,12 +85,12 @@ def main():
         end_time = float(end_tim.get()); """[s] end time of simulation"""
 
         # remove old files
-        if path.exists("../out"):
-            print("\nRemoving old output files\n")
-            rmtree("../out")
+        if path.exists("./out"):
+            print("\nremoving old output files\n")
+            rmtree("./out")
 
         # make new folder for output files
-        mkdir("../out")
+        mkdir("./out")
 
         config = Config(
             fuel_thickness,
@@ -119,14 +119,14 @@ def main():
 
     # when post-processing button is clicked run this code -------------------------------------------------------------
     # Process Final Temp Distribution
-    file3 = open("../out/time.csv", "r")
+    file3 = open("./out/time.csv", "r")
     timesteps = list(csv.reader(file3, delimiter=","))
 
-    file2 = open("../out/temperature.csv", "r")
+    file2 = open("./out/temperature.csv", "r")
     temperatures = list(csv.reader(file2, delimiter=","))
 
     # Process the length of the fuel rod
-    file = open("../out/position.csv", "r")
+    file = open("./out/position.csv", "r")
     position = list(csv.reader(file, delimiter=","))
 
     def postprocessing():
@@ -160,7 +160,7 @@ def main():
             cbar.set_label('Temperature')
 
             # Save the figure
-            plt.savefig(f'../out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
+            plt.savefig(f'./out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
             plt.show()
 
         maxPosition = float(max(position[0]))
@@ -200,8 +200,8 @@ def main():
             print(f"Video saved as {video_name}")
 
         # Example usage
-        image_folder = '../out'  # Folder where images are saved
-        video_name = 'temperature_gradient_video.mp4'  # Name of the output video
+        image_folder = './out'  # Folder where images are saved
+        video_name = './out/temperature_gradient_video.mp4'  # Name of the output video
         fps = 4  # Frames per second (change as needed)
 
         create_video_from_images(image_folder, video_name, fps)
@@ -330,7 +330,7 @@ def main():
         update_values(max(list(map(float, temperatures[-1]))), averageBulkFuelTemp, intmatbul, 50)
 
         # Call the function with a scale factor of 0.5 to reduce the video size to 50%
-        play_video_in_new_window('temperature_gradient_video.mp4', root, fps=4, scale_factor=0.5)
+        play_video_in_new_window('./out/temperature_gradient_video.mp4', root, fps=4, scale_factor=0.5)
 
         # Start the Tkinter main loop
         root.mainloop()
