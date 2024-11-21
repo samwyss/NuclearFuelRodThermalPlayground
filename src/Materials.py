@@ -1,35 +1,71 @@
 import numpy as np
 
 class Materials:
-    '''
+    """
     This Class serves to return material parameters as a function of temperature.
 
-    Input variables:
-    itemp: float, interface temperature as a single value in Kelvin
-    temp: ndarray, temperature in Kelvin as an array of radial position
-
-    output variables:
-    heattransfercoefficient: units of W/m2K, between fuel and Zircaloy
-    thermaldiffusivity: units of m2/s
-    thermalconductivity: units of w/mK
-
-    '''
+    Specifically that of the fuel in this system, it could further be extended by creating multiple materials which contain correlations to update their properties
+    """
     
-    def __init__(self, temps, size):
-        self.thermaldiffusivity = np.zeros(size)
-        self.get_thermaldiffusivity(temps)
-        self.thermalconductivity = np.zeros(size)
-        self.get_thermalconductivity(temps)
-        self.heattransfercoefficient = ()
-        self.get_heattransfercoefficient(temps[-1])
+    def __init__(self, temperature):
+        """Material Constructor"""
 
-    def get_thermaldiffusivity(self, temps):
-            self.thermaldiffusivity = (1/(8e-4*(temps)+0.0686))
+        # initialize thermal diffusivity
+        self.thermal_diffusivity = np.zeros(temperature.shape[0])
+        """[m^2 / s] Thermal Diffusivity"""
 
-    def get_thermalconductivity(self, temps):
-            self.thermalconductivity = (1/((6.8e-2)+(1.7e-4*temps)+(3.2e-8*(temps**2))))+0.128*temps*(2.718**(-(1.16/(8.6e-5*temps))))
+        # initialize thermal conductivity
+        self.thermal_conductivity = np.zeros(temperature.shape[0])
+        """[W / m K] Thermal Conductivity"""
 
-    def get_heattransfercoefficient(self, itemp):
-        #Where itemp is the interface temperture in K
-            #fuel to Zircaloy interface
-            self.heattransfercoefficient = 5364-1.716*(itemp-273)
+        # initialize heat_transfer coefficient
+        self.heat_transfer_coefficient = 0
+        """[W / m^2 K] Heat Transfer Coefficient"""
+
+        # properly initialize all material properties
+        self.update(temperature)
+
+
+    def update(self, temperature):
+        """
+        update all material properties given the current temperature
+        :param temperature: current numpy array of temperatures
+        :return: None
+        """
+
+        # update thermal diffusivity
+        self.__update_thermal_diffusivity(temperature)
+
+        # update thermal conductivity
+        self.__update_thermal_conductivity(temperature)
+
+        # update heat transfer coefficient
+        self.__update_heat_transfer_coefficient(temperature[-1])
+
+    def __update_thermal_diffusivity(self, temperature):
+        """
+        update thermal diffusivity given the current temperature
+        :param temperature: current numpy array of temperatures
+        :return: None
+        """
+
+        self.thermal_diffusivity = (1/(8e-4*temperature+0.0686))
+
+    def __update_thermal_conductivity(self, temperature):
+        """
+        update thermal conductivity given the current temperature
+        :param temperature: current numpy array of temperatures
+        :return: None
+        """
+
+        self.thermal_conductivity = (1/(6.8e-2+(1.7e-4*temperature)+(3.2e-8*(temperature**2))))+0.128*temperature*(2.718**(-(1.16/(8.6e-5*temperature))))
+
+    def __update_heat_transfer_coefficient(self, temperature):
+        """
+        update heat transfer coefficient given the current temperature
+        :param temperature: fuel pin surface temperature
+        :return: None
+        """
+
+        #fuel to Zircaloy interface
+        self.heat_transfer_coefficient = 5364-1.716*(temperature-273)
