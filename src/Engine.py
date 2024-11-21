@@ -5,6 +5,7 @@ from numpy import full, linspace, zeros, errstate
 from numpy.linalg import solve
 
 from src.Config import Config
+from src.Materials import Materials
 
 
 class Engine:
@@ -34,20 +35,23 @@ class Engine:
             csv_writer = writer(file)
             csv_writer.writerow(self.__pos)
 
-        self.__alpha = full(self.__num_points, 1e-6)  # todo fill me in properly
-        """[] thermal diffusivity of mesh"""
-
-        self.__cond = full(self.__num_points, 10.0)  # todo fill me in properly
-        """[] thermal conductivity of mesh"""
-
         self.__temperature = full(self.__num_points, config.get_bulk_material_temp())
         """[K] temperature of all points in mesh"""
 
-        self.__volume_source = zeros(self.__num_points)
-        """[] volumetric sources"""
+        self.__fuel = Materials(self.__temperature)
+        """container and generator for fuel material properties as a function of time"""
+
+        self.__alpha = full(self.__num_points, 1e-6) #self.__fuel.thermal_diffusivity
+        """[m^2 / s] thermal diffusivity of mesh"""
+
+        self.__cond = full(self.__num_points, 10.0) #self.__fuel.thermal_conductivity
+        """[W/ m K] thermal conductivity of mesh"""
+
+        self.__h_clad = 5e3 # self.__fuel.heat_transfer_coefficient
+        """[W / m^2 K] heat transfer coefficient from fuel to clad"""
 
         self.__volume_source = full(self.__num_points, config.get_core_heat_generation())
-        """[W/m^3] volumetric core heat source""" # todo determine me
+        """[W/m^3] volumetric core heat source"""
 
         self.__A = zeros((self.__num_points, self.__num_points))
         """[] A matrix in linear system"""
@@ -58,15 +62,13 @@ class Engine:
         self.__temp_clad = config.get_bulk_material_temp()
         """[K] reference temperature of cladding"""
 
-        self.__h_clad = 100.0  # todo fill me in correctly
-        """[] heat transfer coefficient from fuel to clad"""
-
         self.__c1 = (1 / d_time + self.__alpha / self.__delta_r ** 2)
         """[] array geometric constants for all points in the simulation domain"""
 
         self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
         """[] array geometric constants for all points in the simulation domain"""
 
+        # ignore the div/0 error at r=0, this value is never used thus the nil value is not important to correct and can be ignored
         with errstate(divide='ignore'):
             self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
             """[] array geometric constants for all points in the simulation domain"""
@@ -96,7 +98,8 @@ class Engine:
         # update current time
         self.__current_time += d_time
 
-        # todo update material properties
+        # update material properties
+        #self.__update_material_properties()
 
         # reassemble system with updated properties
         self.__assemble_system(d_time)
@@ -124,14 +127,21 @@ class Engine:
             csv_writer.writerow([self.__current_time])
 
     def __assemble_system(self, d_time: float) -> None:
-        """reassembles matrices based on new material properties"""
+        """
+        reassembles matrices based on new material properties
+        :param d_time: time step
+        :return: None
+        """
 
         # update geometric constants
         self.__c1 = (1 / d_time + self.__alpha / self.__delta_r ** 2)
         self.__c2 = (1 / d_time - self.__alpha / self.__delta_r ** 2)
+
+        # ignore the div/0 error at r=0, this value is never used thus the nil value is not important to correct and can be ignored
         with errstate(divide='ignore'):
             self.__c3 = (self.__alpha / (2.0 * self.__delta_r**2) + self.__alpha / (4.0 * self.__pos * self.__delta_r))
             self.__c4 = (self.__alpha / (2.0 * self.__delta_r**2) - self.__alpha / (4.0 * self.__pos * self.__delta_r))
+
         self.__c5 = (self.__alpha / self.__cond)
         self.__c6 = (2.0 * self.__delta_r * self.__h_clad / self.__cond)
 
@@ -161,3 +171,21 @@ class Engine:
                 + self.__c3[i] * self.__temperature[i + 1]
                 + self.__c4[i]* self.__temperature[i - 1]
             )
+
+    def __update_material_properties(self):
+        """
+        updates all material properties using the current temperature
+        :return: None
+        """
+
+        # update all material properties
+        self.__fuel.update(self.__temperature)
+
+        # update thermal diffusivity
+        self.__alpha = self.__fuel.thermal_diffusivity
+
+        # update thermal conductivity
+        self.__cond = self.__fuel.thermal_conductivity
+
+        # update heat transfer coefficient
+        self.__h_clad = self.__fuel.heat_transfer_coefficient
