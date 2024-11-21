@@ -24,7 +24,7 @@ To set up a python environment for this project, run the following command in th
 
 This environment can be activated with the following command.
 
-    source .\.venv\bin\activate
+    source ./.venv/bin/activate
     
 Dependencies can now be installed with the following command.
 
