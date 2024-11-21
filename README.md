@@ -9,7 +9,7 @@ To set up a python environment for this project, run the following command in a 
 
 This environment can be activated with the following command.
 
-    .\venv\activate.ps1
+    .\.venv\Scripts\Activate.ps1
     
 Dependencies can now be installed with the following command.
 
@@ -24,7 +24,7 @@ To set up a python environment for this project, run the following command in th
 
 This environment can be activated with the following command.
 
-    source .\venv\activate
+    source .\.venv\bin\activate
     
 Dependencies can now be installed with the following command.
 
