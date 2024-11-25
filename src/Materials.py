@@ -49,7 +49,7 @@ class Materials:
         :return: None
         """
 
-        self.thermal_diffusivity = (1/(8e-4*temperature+0.0686))
+        self.thermal_diffusivity = (1/(8e-4*temperature+0.0686))*1e-6
 
     def __update_thermal_conductivity(self, temperature):
         """

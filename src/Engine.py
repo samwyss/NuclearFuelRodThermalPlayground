@@ -41,13 +41,13 @@ class Engine:
         self.__fuel = Materials(self.__temperature)
         """container and generator for fuel material properties as a function of time"""
 
-        self.__alpha = full(self.__num_points, 1e-6) #self.__fuel.thermal_diffusivity
+        self.__alpha = self.__fuel.thermal_diffusivity
         """[m^2 / s] thermal diffusivity of mesh"""
 
-        self.__cond = full(self.__num_points, 10.0) #self.__fuel.thermal_conductivity
+        self.__cond = self.__fuel.thermal_conductivity
         """[W/ m K] thermal conductivity of mesh"""
 
-        self.__h_clad = 5e3 # self.__fuel.heat_transfer_coefficient
+        self.__h_clad = self.__fuel.heat_transfer_coefficient
         """[W / m^2 K] heat transfer coefficient from fuel to clad"""
 
         self.__volume_source = full(self.__num_points, config.get_core_heat_generation())
@@ -99,7 +99,7 @@ class Engine:
         self.__current_time += d_time
 
         # update material properties
-        #self.__update_material_properties()
+        self.__update_material_properties()
 
         # reassemble system with updated properties
         self.__assemble_system(d_time)
