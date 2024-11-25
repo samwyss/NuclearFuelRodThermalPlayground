@@ -303,13 +303,13 @@ def main():
         avg_coolant_temp_var = StringVar()
 
         # Add labels and value fields for the four data points
-        Label(input_frame, text="Center Line Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Center Line Temp (K):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=center_line_temp, font=("Arial", 12)).pack(anchor="w", pady=5)
 
-        Label(input_frame, text="Bulk Fuel Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Bulk Fuel Temp (K):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=bulk_fuel_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
 
-        Label(input_frame, text="Bulk Clad Temp (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
+        Label(input_frame, text="Bulk Clad Temp (K):", font=("Arial", 12)).pack(anchor="w", pady=5)
         Label(input_frame, textvariable=bulk_clad_temp_var, font=("Arial", 12)).pack(anchor="w", pady=5)
 
         #Label(input_frame, text="Average Coolant Temp dr from Clad (k):", font=("Arial", 12)).pack(anchor="w", pady=5)
