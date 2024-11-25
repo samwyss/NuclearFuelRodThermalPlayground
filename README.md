@@ -20,6 +20,7 @@ Please ignore this issue as this package is purely needed for Linux systems.
 
 ### Linux
 To set up a python environment for this project, run the following command in the terminal.
+
     python3 -m venv .venv
 
 This environment can be activated with the following command.
