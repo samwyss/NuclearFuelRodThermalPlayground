@@ -71,7 +71,7 @@ def main():
 
     # creating the function that closes the window
     def exit_window():
-        print("\nWindow is being closed.")
+        print("\nWindow is being closed. Please be patient as plots are being rendered per time step.")
         root.destroy()
         return
 
@@ -161,7 +161,8 @@ def main():
 
             # Save the figure
             plt.savefig(f'./out/temperature_gradient_timestep_{timestep}.png', bbox_inches='tight')
-            plt.show()
+            ##plt.show()
+            plt.close("all")
 
         maxPosition = float(max(position[0]))
         minPosition = float(min(position[0]))
