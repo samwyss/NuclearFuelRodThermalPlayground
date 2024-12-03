@@ -33,13 +33,13 @@ def main():
     reminder.grid(row=1, column=0)
 
     # creates labels for each input
-    label_1 = Label(root, text="Fuel Thickness [m] (Example input: 0.005)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_1 = Label(root, text="Fuel Radius [m] (Example input: 0.004)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
     label_4 = Label(root, text="Initial Cladding Temperature [K] (Example input: 561)", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
     label_5 = Label(root, text="Fuel Volumetric Heat Generation [W/m\u00b3] (Example input: 428e6)", bg="white", fg="#7e57c2",
                     font=('Helvetica', 15))
     label_6 = Label(root, text="Number of Saved Time Steps (Example input: 100)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
-    label_7 = Label(root, text="Total Simulation Time [s] (Example input: 3600)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
+    label_7 = Label(root, text="Total Simulation Time [s] (Example input: 30)", bg="white", fg="#7e57c2", font=('Helvetica', 15))
 
     # defines a string variable for each input, used later to convert from string to text to float
     fuel_thick = StringVar()
