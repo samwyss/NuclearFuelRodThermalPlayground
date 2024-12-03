@@ -127,7 +127,8 @@ def main():
 
     # Process the length of the fuel rod
     file = open("./out/position.csv", "r")
-    position = list(csv.reader(file, delimiter=","))
+    positions = list(csv.reader(file, delimiter=","))
+    position = [float(x) for x in positions[0]]
 
     def postprocessing():
         # Function to generate the plot and save it as an image
@@ -150,9 +151,9 @@ def main():
 
             # Set labels
             ax.set_xticks(np.arange(1, len(position) + 1))
-            ax.set_xticklabels([f"{pos:.4f}" for pos in position])
+            ax.set_xticklabels([f"{pos:.5f}" for pos in position])
             ax.set_yticks([])
-            ax.set_xlabel('Location index')
+            ax.set_xlabel('Radial Position (m)')
             ax.set_title(f'Temperature Gradient at Timestep {timestep}')
 
             # Show color bar for reference
@@ -164,12 +165,12 @@ def main():
             ##plt.show()
             plt.close("all")
 
-        maxPosition = float(max(position[0]))
-        minPosition = float(min(position[0]))
+        maxPosition = position[-1]
+        minPosition = position[0]
         maxTemperature = float(max(temperatures[-1]))
         minTemperature = float(min(temperatures[0]))
         j = 0
-        rounded_positions = np.linspace(minPosition, maxPosition, len(position[0]))
+        rounded_positions = np.linspace(minPosition, maxPosition, len(position))
         for i in timesteps:
             rounded_timestep = round(float(i[0]))  # Round the timestep to the nearest integer
             tempTemps = list(map(float, temperatures[j]))  # Convert temperature values to floats
@@ -264,15 +265,16 @@ def main():
             video_window.geometry(f"{int(800 * scale_factor)}x{int(600 * scale_factor)}")  # Adjust as needed
 
         def generate_chart():
-
+            minPositions = minPosition * 1000
+            maxPositions = maxPosition * 1000
             # Example data: temperature distribution
-            distance = np.linspace(minPosition, maxPosition, len(position[0]))
+            distance = np.linspace(minPositions, maxPositions, len(position))
             temperature = list(map(float, temperatures[-1]))
 
             fig = Figure(figsize=(5, 4), dpi=100)
             ax = fig.add_subplot(111)
             ax.plot(distance, temperature)
-            ax.set_xlabel('Distance (m)')
+            ax.set_xlabel('Distance (mm)')
             ax.set_ylabel('Temperature (K)')
             ax.set_title('Temperature Distribution')
 
